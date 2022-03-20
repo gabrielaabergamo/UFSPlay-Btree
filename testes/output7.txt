@@ -1,0 +1,190 @@
+-- OPERAÇÕES CONTEMPLADAS PELO CASO DE TESTE:
+-- ÁRVORE-B DE ORDEM 3
+-- CADASTRO DE USUARIO
+-- CADASTRO DE JOGO
+-- DEPÓSITO DE SALDO
+-- COMPRA DE JOGO
+-- BUSCA DE JOGOS POR TITULO
+-- LISTAGEM DE COMPRAS DENTRO DE PERÍODO
+-- IMPRIMIR ARQUIVO USUARIOS
+-- IMPRIMIR ARQUIVO JOGOS
+-- IMPRIMIR ARQUIVO COMPRAS
+-- IMPRIMIR ÍNDICE DE USUARIOS
+-- IMPRIMIR ÍNDICE DE JOGOS
+-- IMPRIMIR ÍNDICE DE TITULO
+-- IMPRIMIR ÍNDICE DE COMPRAS
+-- IMPRIMIR ÍNDICE DE DATA
+
+-- usuario A
+INSERT INTO usuarios VALUES ('66545678765', 'SnailThemi', 'mariaeugenia@gmail.com');
+OK
+
+-- usuario B
+INSERT INTO usuarios VALUES ('99876556782', 'ezPz#Fireclan', 'ga.augusto@gmail.com');
+OK
+
+-- usuario C
+INSERT INTO usuarios VALUES ('44565434213', 'forninhocaiu', 'ge.santana@gmail.com');
+OK
+
+-- usuario D
+INSERT INTO usuarios VALUES ('54654367865', 'batata_doce', 'galmeida@gmail.com');
+OK
+
+-- usuario E
+INSERT INTO usuarios VALUES ('37567876542', 'Erlkonigin', 'melissa@gmail.com');
+OK
+
+-- usuario F, email igual ao do usuario E
+INSERT INTO usuarios VALUES ('14565436782', 'melange', 'melissa@gmail.com');
+OK
+
+-- usuario G
+INSERT INTO usuarios VALUES ('01733495010', 'Literally a metal straw', 'metal.straws@gmail.com');
+OK
+
+-- usuario H
+INSERT INTO usuarios VALUES ('62155476035', 'JSantos', 'jose.santos@hotmail.com');
+OK
+
+-- usuario I
+INSERT INTO usuarios VALUES ('18406718072', 'EmilioRemedios', 'remedios.emilio@hotmail.com');
+OK
+
+-- adicionando fundos às contas
+UPDATE usuarios SET saldo = saldo + 1250.80 WHERE id_user = '54654367865';
+OK
+UPDATE usuarios SET saldo = saldo + 250 WHERE id_user = '14565436782';
+OK
+UPDATE usuarios SET saldo = saldo + 250.80 WHERE id_user = '37567876542';
+OK
+UPDATE usuarios SET saldo = saldo + 1000000000.12 WHERE id_user = '37567876542';
+OK
+UPDATE usuarios SET saldo = saldo + 190 WHERE id_user = '37567876542';
+OK
+UPDATE usuarios SET saldo = saldo + 30 WHERE id_user = '66545678765';
+OK
+UPDATE usuarios SET saldo = saldo + 29.69 WHERE id_user = '44565434213';
+OK
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000030.00;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;***********;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000029.69;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000001250.80;###########################################################37567876542;Erlkonigin;melissa@gmail.com;***********;1000000440.92;#############################################################14565436782;melange;melissa@gmail.com;***********;0000000250.00;################################################################01733495010;Literally a metal straw;metal.straws@gmail.com;***********;0000000000.00;###########################################62155476035;JSantos;jose.santos@hotmail.com;***********;0000000000.00;##########################################################18406718072;EmilioRemedios;remedios.emilio@hotmail.com;***********;0000000000.00;###############################################
+\echo index usuarios_idx
+001017334950100006###############T*********001998765567820001###############T*********001145654367820005###############F000004***002546543678650003621554760350007T*********002184067180720008375678765420004T*********001665456787650000###############F003001***001445654342130002###############F002005***
+
+-- jogo A
+INSERT INTO jogos VALUES ('Meia-Vida', 'Valvula', 'Valvula', '19981119', 29.69);
+OK
+
+-- jogo B
+INSERT INTO jogos VALUES ('Presa', 'Cabeca de Melao Studios', '40K Jogos', '20070711', 44.29);
+OK
+
+-- jogo C
+INSERT INTO jogos VALUES ('Catorze Minutos', 'Antonio Luis', 'Annapurr', '20210819', 51.99);
+OK
+
+-- jogo D, mesma desenvolvedora do jogo A
+INSERT INTO jogos VALUES ('Esquerda 4 Morto 2', 'Valvula', 'Valvula', '20091117', 20.69);
+OK
+
+-- jogo E
+INSERT INTO jogos VALUES ('Cavaleiro Vazio', 'Time Cereja', 'Time Cereja', '20170224', 27.99);
+OK
+
+-- jogo F
+INSERT INTO jogos VALUES ('Katana -1', 'Askiihard', 'Retornar Analogo', '20190418', 28.99);
+OK
+
+-- jogo G
+INSERT INTO jogos VALUES ('Overtale', 'Tobias Raposa', 'Tobias Raposa', '20190418', 19.99);
+OK
+
+-- jogo H
+INSERT INTO jogos VALUES ('Pluto', 'Supertiny Games', 'Supertiny Games', '20200917', 47.49);
+OK
+
+-- jogo I
+INSERT INTO jogos VALUES ('After Your Eyes', 'HelloWorld Games', 'Groundbound Games', '20210408', 20.69);
+OK
+
+\echo file ARQUIVO_JOGOS
+00000000;Meia-Vida;Valvula;Valvula;19981119;0000000029.69;;#####################################################################################################################################################################################################00000001;Presa;Cabeca de Melao Studios;40K Jogos;20070711;0000000044.29;;#######################################################################################################################################################################################00000002;Catorze Minutos;Antonio Luis;Annapurr;20210819;0000000051.99;;#########################################################################################################################################################################################00000003;Esquerda 4 Morto 2;Valvula;Valvula;20091117;0000000020.69;;############################################################################################################################################################################################00000004;Cavaleiro Vazio;Time Cereja;Time Cereja;20170224;0000000027.99;;#######################################################################################################################################################################################00000005;Katana -1;Askiihard;Retornar Analogo;20190418;0000000028.99;;##########################################################################################################################################################################################00000006;Overtale;Tobias Raposa;Tobias Raposa;20190418;0000000019.99;;##########################################################################################################################################################################################00000007;Pluto;Supertiny Games;Supertiny Games;20200917;0000000047.49;;#########################################################################################################################################################################################00000008;After Your Eyes;HelloWorld Games;Groundbound Games;20210408;0000000020.69;;############################################################################################################################################################################
+\echo index jogos_idx
+001000000000000############T*********001000000020002############T*********001000000010001############F000001***001000000040004############T*********001000000060006############T*********002000000050005000000070007F003004007001000000030003############F002005***001000000080008############T*********
+\echo index titulo_idx
+002After Your Eyes############################00000008Catorze Minutos############################00000002T*********001Overtale###################################00000006###################################################T*********001Cavaleiro Vazio############################00000004###################################################F000003***002Esquerda 4 Morto 2#########################00000003Katana -1##################################00000005T*********001Presa######################################00000001###################################################T*********001Pluto######################################00000007###################################################F001004***001Meia-Vida##################################00000000###################################################F002005***
+
+\echo file ARQUIVO_COMPRAS
+ERRO: Arquivo vazio
+\echo index compras_idx
+ERRO: Arquivo vazio
+\echo index data_user_game_idx
+ERRO: Arquivo vazio
+
+-- efetuar compras
+INSERT INTO compras VALUES ('44565434213', 'Meia-Vida');
+OK
+INSERT INTO compras VALUES ('37567876542', 'Cavaleiro Vazio');
+OK
+INSERT INTO compras VALUES ('37567876542', 'After Your Eyes');
+OK
+INSERT INTO compras VALUES ('66545678765', 'Katana -1');
+OK
+\echo file ARQUIVO_COMPRAS
+445654342132021092000000000375678765422021092400000004375678765422021100300000008665456787652021100500000005
+\echo index compras_idx
+00137567876542000000040001#######################T*********0024456543421300000000000066545678765000000050003T*********00137567876542000000080002#######################F000001***
+\echo index data_user_game_idx
+001202109204456543421300000000###########################T*********002202110033756787654200000008202110056654567876500000005T*********001202109243756787654200000004###########################F000001***
+
+-- buscando jogos existentes pelo titulo
+SELECT * FROM jogos WHERE titulo = 'Meia-Vida';
+Nos percorridos: 6 (0)
+Nos percorridos: 6 (0) 2 (0) 0 (0)
+00000000, Meia-Vida, Valvula, Valvula, 19981119, 29.69
+SELECT * FROM jogos WHERE titulo = 'Esquerda 4 Morto 2';
+Nos percorridos: 6 (0) 2 (0) 3 (1 0)
+Nos percorridos: 6 (0)
+00000003, Esquerda 4 Morto 2, Valvula, Valvula, 20091117, 20.69
+SELECT * FROM jogos WHERE titulo = 'Catorze Minutos';
+Nos percorridos: 6 (0) 2 (0) 0 (1)
+Nos percorridos: 6 (0) 2 (0) 1 (0)
+00000002, Catorze Minutos, Antonio Luis, Annapurr, 20210819, 51.99
+
+-- buscando jogos inexistentes pelo titulo
+SELECT * FROM jogos WHERE titulo = 'Meia-Vida 2: Episodio 2 - Parte 2-2';
+Nos percorridos: 6 (0) 2 (0) 3 (1)
+ERRO: Registro nao encontrado
+SELECT * FROM jogos WHERE titulo = 'Had Dad Redemption';
+Nos percorridos: 6 (0) 2 (0) 3 (1 0)
+ERRO: Registro nao encontrado
+SELECT * FROM jogos WHERE titulo = 'Return of the Sobradinho';
+Nos percorridos: 6 (0) 5 (0) 4 (0)
+ERRO: Registro nao encontrado
+SELECT * FROM jogos WHERE titulo = 'Yes Womans Land';
+Nos percorridos: 6 (0) 5 (0) 4 (0)
+ERRO: Registro nao encontrado
+
+-- listar compras entre datas
+SELECT * FROM compras WHERE data_compra BETWEEN '20000101' AND '21001231' ORDER BY data_compra ASC
+44565434213, 20210920, 00000000
+37567876542, 20210924, 00000004
+37567876542, 20211003, 00000008
+66545678765, 20211005, 00000005
+
+SELECT * FROM compras WHERE data_compra BETWEEN '20210920' AND '20211003' ORDER BY data_compra ASC
+44565434213, 20210920, 00000000
+37567876542, 20210924, 00000004
+37567876542, 20211003, 00000008
+
+SELECT * FROM compras WHERE data_compra BETWEEN '20210919' AND '20210925' ORDER BY data_compra ASC
+44565434213, 20210920, 00000000
+37567876542, 20210924, 00000004
+
+SELECT * FROM compras WHERE data_compra BETWEEN '20210922' AND '20210928' ORDER BY data_compra ASC
+37567876542, 20210924, 00000004
+
+SELECT * FROM compras WHERE data_compra BETWEEN '20220101' AND '20220303' ORDER BY data_compra ASC
+AVISO: Nenhum registro encontrado
+
+\q

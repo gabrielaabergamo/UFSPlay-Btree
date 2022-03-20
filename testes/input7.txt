@@ -1,0 +1,118 @@
+-- OPERAÇÕES CONTEMPLADAS PELO CASO DE TESTE:
+-- ÁRVORE-B DE ORDEM 3
+-- CADASTRO DE USUARIO
+-- CADASTRO DE JOGO
+-- DEPÓSITO DE SALDO
+-- COMPRA DE JOGO
+-- BUSCA DE JOGOS POR TITULO
+-- LISTAGEM DE COMPRAS DENTRO DE PERÍODO
+-- IMPRIMIR ARQUIVO USUARIOS
+-- IMPRIMIR ARQUIVO JOGOS
+-- IMPRIMIR ARQUIVO COMPRAS
+-- IMPRIMIR ÍNDICE DE USUARIOS
+-- IMPRIMIR ÍNDICE DE JOGOS
+-- IMPRIMIR ÍNDICE DE TITULO
+-- IMPRIMIR ÍNDICE DE COMPRAS
+-- IMPRIMIR ÍNDICE DE DATA
+
+-- usuario A
+INSERT INTO usuarios VALUES ('66545678765', 'SnailThemi', 'mariaeugenia@gmail.com');
+
+-- usuario B
+INSERT INTO usuarios VALUES ('99876556782', 'ezPz#Fireclan', 'ga.augusto@gmail.com');
+
+-- usuario C
+INSERT INTO usuarios VALUES ('44565434213', 'forninhocaiu', 'ge.santana@gmail.com');
+
+-- usuario D
+INSERT INTO usuarios VALUES ('54654367865', 'batata_doce', 'galmeida@gmail.com');
+
+-- usuario E
+INSERT INTO usuarios VALUES ('37567876542', 'Erlkonigin', 'melissa@gmail.com');
+
+-- usuario F, email igual ao do usuario E
+INSERT INTO usuarios VALUES ('14565436782', 'melange', 'melissa@gmail.com');
+
+-- usuario G
+INSERT INTO usuarios VALUES ('01733495010', 'Literally a metal straw', 'metal.straws@gmail.com');
+
+-- usuario H
+INSERT INTO usuarios VALUES ('62155476035', 'JSantos', 'jose.santos@hotmail.com');
+
+-- usuario I
+INSERT INTO usuarios VALUES ('18406718072', 'EmilioRemedios', 'remedios.emilio@hotmail.com');
+
+-- adicionando fundos às contas
+UPDATE usuarios SET saldo = saldo + 1250.80 WHERE id_user = '54654367865';
+UPDATE usuarios SET saldo = saldo + 250 WHERE id_user = '14565436782';
+UPDATE usuarios SET saldo = saldo + 250.80 WHERE id_user = '37567876542';
+UPDATE usuarios SET saldo = saldo + 1000000000.12 WHERE id_user = '37567876542';
+UPDATE usuarios SET saldo = saldo + 190 WHERE id_user = '37567876542';
+UPDATE usuarios SET saldo = saldo + 30 WHERE id_user = '66545678765';
+UPDATE usuarios SET saldo = saldo + 29.69 WHERE id_user = '44565434213';
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- jogo A
+INSERT INTO jogos VALUES ('Meia-Vida', 'Valvula', 'Valvula', '19981119', 29.69);
+
+-- jogo B
+INSERT INTO jogos VALUES ('Presa', 'Cabeca de Melao Studios', '40K Jogos', '20070711', 44.29);
+
+-- jogo C
+INSERT INTO jogos VALUES ('Catorze Minutos', 'Antonio Luis', 'Annapurr', '20210819', 51.99);
+
+-- jogo D, mesma desenvolvedora do jogo A
+INSERT INTO jogos VALUES ('Esquerda 4 Morto 2', 'Valvula', 'Valvula', '20091117', 20.69);
+
+-- jogo E
+INSERT INTO jogos VALUES ('Cavaleiro Vazio', 'Time Cereja', 'Time Cereja', '20170224', 27.99);
+
+-- jogo F
+INSERT INTO jogos VALUES ('Katana -1', 'Askiihard', 'Retornar Analogo', '20190418', 28.99);
+
+-- jogo G
+INSERT INTO jogos VALUES ('Overtale', 'Tobias Raposa', 'Tobias Raposa', '20190418', 19.99);
+
+-- jogo H
+INSERT INTO jogos VALUES ('Pluto', 'Supertiny Games', 'Supertiny Games', '20200917', 47.49);
+
+-- jogo I
+INSERT INTO jogos VALUES ('After Your Eyes', 'HelloWorld Games', 'Groundbound Games', '20210408', 20.69);
+
+\echo file ARQUIVO_JOGOS
+\echo index jogos_idx
+\echo index titulo_idx
+
+\echo file ARQUIVO_COMPRAS
+\echo index compras_idx
+\echo index data_user_game_idx
+
+-- efetuar compras
+INSERT INTO compras VALUES ('44565434213', 'Meia-Vida');
+INSERT INTO compras VALUES ('37567876542', 'Cavaleiro Vazio');
+INSERT INTO compras VALUES ('37567876542', 'After Your Eyes');
+INSERT INTO compras VALUES ('66545678765', 'Katana -1');
+\echo file ARQUIVO_COMPRAS
+\echo index compras_idx
+\echo index data_user_game_idx
+
+-- buscando jogos existentes pelo titulo
+SELECT * FROM jogos WHERE titulo = 'Meia-Vida';
+SELECT * FROM jogos WHERE titulo = 'Esquerda 4 Morto 2';
+SELECT * FROM jogos WHERE titulo = 'Catorze Minutos';
+
+-- buscando jogos inexistentes pelo titulo
+SELECT * FROM jogos WHERE titulo = 'Meia-Vida 2: Episodio 2 - Parte 2-2';
+SELECT * FROM jogos WHERE titulo = 'Had Dad Redemption';
+SELECT * FROM jogos WHERE titulo = 'Return of the Sobradinho';
+SELECT * FROM jogos WHERE titulo = 'Yes Womans Land';
+
+-- listar compras entre datas
+SELECT * FROM compras WHERE data_compra BETWEEN '20000101' AND '21001231' ORDER BY data_compra ASC
+SELECT * FROM compras WHERE data_compra BETWEEN '20210920' AND '20211003' ORDER BY data_compra ASC
+SELECT * FROM compras WHERE data_compra BETWEEN '20210919' AND '20210925' ORDER BY data_compra ASC
+SELECT * FROM compras WHERE data_compra BETWEEN '20210922' AND '20210928' ORDER BY data_compra ASC
+SELECT * FROM compras WHERE data_compra BETWEEN '20220101' AND '20220303' ORDER BY data_compra ASC
+
+\q

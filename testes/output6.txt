@@ -1,0 +1,170 @@
+-- OPERAÇÕES CONTEMPLADAS PELO CASO DE TESTE:
+-- ÁRVORE-B DE ORDEM 3
+-- CADASTRO DE USUARIO
+-- CADASTRO DE JOGO
+-- DEPÓSITO DE SALDO
+-- COMPRA DE JOGO
+-- IMPRIMIR ARQUIVO USUARIOS
+-- IMPRIMIR ARQUIVO JOGOS
+-- IMPRIMIR ARQUIVO COMPRAS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE USUARIOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE JOGOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE TITULO
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE COMPRAS
+
+\echo file ARQUIVO_COMPRAS
+ERRO: Arquivo vazio
+
+-- usuario A
+INSERT INTO usuarios VALUES ('66545678765', 'SnailThemi', 'mariaeugenia@gmail.com');
+OK
+
+-- usuario B
+INSERT INTO usuarios VALUES ('99876556782', 'ezPz#Fireclan', 'ga.augusto@gmail.com');
+OK
+
+-- usuario C
+INSERT INTO usuarios VALUES ('44565434213', 'forninhocaiu', 'ge.santana@gmail.com');
+OK
+
+-- usuario D
+INSERT INTO usuarios VALUES ('54654367865', 'batata_doce', 'galmeida@gmail.com');
+OK
+
+-- usuario E
+INSERT INTO usuarios VALUES ('37567876542', 'Erlkonigin', 'melissa@gmail.com');
+OK
+
+-- usuario F, email igual ao do usuario E
+INSERT INTO usuarios VALUES ('14565436782', 'melange', 'melissa@gmail.com');
+OK
+
+-- adicionando fundos às contas
+UPDATE usuarios SET saldo = saldo + 1250.80 WHERE id_user = '54654367865';
+OK
+UPDATE usuarios SET saldo = saldo + 250 WHERE id_user = '14565436782';
+OK
+UPDATE usuarios SET saldo = saldo + 250.80 WHERE id_user = '37567876542';
+OK
+UPDATE usuarios SET saldo = saldo + 1000000000.12 WHERE id_user = '37567876542';
+OK
+UPDATE usuarios SET saldo = saldo + 190 WHERE id_user = '37567876542';
+OK
+UPDATE usuarios SET saldo = saldo + 30 WHERE id_user = '66545678765';
+OK
+UPDATE usuarios SET saldo = saldo + 29.69 WHERE id_user = '44565434213';
+OK
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000030.00;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;***********;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000029.69;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000001250.80;###########################################################37567876542;Erlkonigin;melissa@gmail.com;***********;1000000440.92;#############################################################14565436782;melange;melissa@gmail.com;***********;0000000250.00;################################################################
+\echo index usuarios_idx
+002145654367820005375678765420004T*********001998765567820001###############T*********002445654342130002665456787650000F000003001001546543678650003###############T*********
+
+-- jogo A
+INSERT INTO jogos VALUES ('Meia-Vida', 'Valvula', 'Valvula', '19981119', 29.69);
+OK
+
+-- jogo B
+INSERT INTO jogos VALUES ('Presa', 'Cabeca de Melao Studios', '40K Jogos', '20070711', 44.29);
+OK
+
+-- jogo C
+INSERT INTO jogos VALUES ('Catorze Minutos', 'Antonio Luis', 'Annapurr', '20210819', 51.99);
+OK
+
+-- jogo D, mesma desenvolvedora do jogo A
+INSERT INTO jogos VALUES ('Esquerda 4 Morto 2', 'Valvula', 'Valvula', '20091117', 20.69);
+OK
+
+-- jogo E
+INSERT INTO jogos VALUES ('Cavaleiro Vazio', 'Time Cereja', 'Time Cereja', '20170224', 27.99);
+OK
+
+-- jogo F
+INSERT INTO jogos VALUES ('Katana -1', 'Askiihard', 'Retornar Analogo', '20190418', 28.99);
+OK
+
+\echo file ARQUIVO_JOGOS
+00000000;Meia-Vida;Valvula;Valvula;19981119;0000000029.69;;#####################################################################################################################################################################################################00000001;Presa;Cabeca de Melao Studios;40K Jogos;20070711;0000000044.29;;#######################################################################################################################################################################################00000002;Catorze Minutos;Antonio Luis;Annapurr;20210819;0000000051.99;;#########################################################################################################################################################################################00000003;Esquerda 4 Morto 2;Valvula;Valvula;20091117;0000000020.69;;############################################################################################################################################################################################00000004;Cavaleiro Vazio;Time Cereja;Time Cereja;20170224;0000000027.99;;#######################################################################################################################################################################################00000005;Katana -1;Askiihard;Retornar Analogo;20190418;0000000028.99;;##########################################################################################################################################################################################
+\echo index jogos_idx
+001000000000000############T*********001000000020002############T*********002000000010001000000030003F000001003002000000040004000000050005T*********
+\echo index titulo_idx
+001Catorze Minutos############################00000002###################################################T*********001Presa######################################00000001###################################################T*********002Cavaleiro Vazio############################00000004Meia-Vida##################################00000000F000003001002Esquerda 4 Morto 2#########################00000003Katana -1##################################00000005T*********
+
+\echo file ARQUIVO_COMPRAS
+ERRO: Arquivo vazio
+\echo index compras_idx
+ERRO: Arquivo vazio
+
+-- efetuar compras validas
+INSERT INTO compras VALUES ('44565434213', 'Meia-Vida');
+OK
+\echo file ARQUIVO_COMPRAS
+445654342132021081900000000
+\echo index compras_idx
+00144565434213000000000000#######################T*********
+
+INSERT INTO compras VALUES ('37567876542', 'Cavaleiro Vazio');
+OK
+\echo file ARQUIVO_COMPRAS
+445654342132021081900000000375678765422021090900000004
+\echo index compras_idx
+0023756787654200000004000144565434213000000000000T*********
+
+INSERT INTO compras VALUES ('37567876542', 'Esquerda 4 Morto 2');
+OK
+\echo file ARQUIVO_COMPRAS
+445654342132021081900000000375678765422021090900000004375678765422021092000000003
+\echo index compras_idx
+00137567876542000000030002#######################T*********00144565434213000000000000#######################T*********00137567876542000000040001#######################F000001***
+
+INSERT INTO compras VALUES ('66545678765', 'Katana -1');
+OK
+\echo file ARQUIVO_COMPRAS
+445654342132021081900000000375678765422021090900000004375678765422021092000000003665456787652021100500000005
+\echo index compras_idx
+00137567876542000000030002#######################T*********0024456543421300000000000066545678765000000050003T*********00137567876542000000040001#######################F000001***
+
+-- efetuar compras invalidas
+INSERT INTO compras VALUES ('44565434213', 'Zagreus');
+ERRO: Registro nao encontrado
+INSERT INTO compras VALUES ('91547871143', 'Cavaleiro Vazio');
+ERRO: Registro nao encontrado
+INSERT INTO compras VALUES ('42345676542', 'Sedex Simulator');
+ERRO: Registro nao encontrado
+\echo file ARQUIVO_COMPRAS
+445654342132021081900000000375678765422021090900000004375678765422021092000000003665456787652021100500000005
+\echo index compras_idx
+00137567876542000000030002#######################T*********0024456543421300000000000066545678765000000050003T*********00137567876542000000040001#######################F000001***
+
+-- efetuar compras sem saldo
+INSERT INTO compras VALUES ('44565434213', 'Cavaleiro Vazio');
+ERRO: Saldo insuficiente
+INSERT INTO compras VALUES ('99876556782', 'Presa');
+ERRO: Saldo insuficiente
+INSERT INTO compras VALUES ('66545678765', 'Catorze Minutos');
+ERRO: Saldo insuficiente
+\echo file ARQUIVO_COMPRAS
+445654342132021081900000000375678765422021090900000004375678765422021092000000003665456787652021100500000005
+\echo index compras_idx
+00137567876542000000030002#######################T*********0024456543421300000000000066545678765000000050003T*********00137567876542000000040001#######################F000001***
+
+-- efetuar compras repetidas
+INSERT INTO compras VALUES ('44565434213', 'Meia-Vida');
+ERRO: Ja existe um registro com a chave 4456543421300000000
+INSERT INTO compras VALUES ('37567876542', 'Cavaleiro Vazio');
+ERRO: Ja existe um registro com a chave 3756787654200000004
+INSERT INTO compras VALUES ('37567876542', 'Esquerda 4 Morto 2');
+ERRO: Ja existe um registro com a chave 3756787654200000003
+INSERT INTO compras VALUES ('66545678765', 'Katana -1');
+ERRO: Ja existe um registro com a chave 6654567876500000005
+\echo file ARQUIVO_COMPRAS
+445654342132021081900000000375678765422021090900000004375678765422021092000000003665456787652021100500000005
+\echo index compras_idx
+00137567876542000000030002#######################T*********0024456543421300000000000066545678765000000050003T*********00137567876542000000040001#######################F000001***
+
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000001.01;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;***********;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000000.00;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000001250.80;###########################################################37567876542;Erlkonigin;melissa@gmail.com;***********;1000000392.24;#############################################################14565436782;melange;melissa@gmail.com;***********;0000000250.00;################################################################
+\echo index usuarios_idx
+002145654367820005375678765420004T*********001998765567820001###############T*********002445654342130002665456787650000F000003001001546543678650003###############T*********
+
+\q

@@ -1,0 +1,120 @@
+-- OPERAÇÕES CONTEMPLADAS PELO CASO DE TESTE:
+-- ÁRVORE-B DE ORDEM 3
+-- CADASTRO DE USUARIO
+-- CADASTRO DE JOGO
+-- DEPÓSITO DE SALDO
+-- BUSCA DE USUARIOS POR ID
+-- BUSCA DE JOGOS POR ID
+-- LISTAGEM DE USUARIOS
+-- IMPRIMIR ARQUIVO USUARIOS
+-- IMPRIMIR ARQUIVO JOGOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE USUARIOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE JOGOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE TITULO
+
+-- usuario A
+INSERT INTO usuarios VALUES ('66545678765', 'SnailThemi', 'mariaeugenia@gmail.com');
+SELECT * FROM usuarios ORDER BY id_user ASC;
+SELECT * FROM usuarios WHERE id_user = '66545678765';
+SELECT * FROM usuarios WHERE id_user = '99876556782';
+
+-- usuario B
+INSERT INTO usuarios VALUES ('99876556782', 'ezPz#Fireclan', 'ga.augusto@gmail.com');
+SELECT * FROM usuarios ORDER BY id_user ASC;
+SELECT * FROM usuarios WHERE id_user = '99876556782';
+
+-- usuario C
+INSERT INTO usuarios VALUES ('44565434213', 'forninhocaiu', 'ge.santana@gmail.com');
+SELECT * FROM usuarios ORDER BY id_user ASC;
+
+-- usuario D
+INSERT INTO usuarios VALUES ('54654367865', 'batata_doce', 'galmeida@gmail.com');
+SELECT * FROM usuarios ORDER BY id_user ASC;
+
+-- usuario E
+INSERT INTO usuarios VALUES ('37567876542', 'Erlkonigin', 'melissa@gmail.com');
+SELECT * FROM usuarios ORDER BY id_user ASC;
+
+-- usuario F, email igual ao do usuario E
+INSERT INTO usuarios VALUES ('14565436782', 'melange', 'melissa@gmail.com');
+SELECT * FROM usuarios ORDER BY id_user ASC;
+
+-- depósito para o usuario C
+UPDATE usuarios SET saldo = saldo + 5 WHERE id_user = '44565434213';
+
+-- depósito válido para o usuario D
+UPDATE usuarios SET saldo = saldo + 190.33 WHERE id_user = '54654367865';
+
+-- depósito para um usuario inexistente
+UPDATE usuarios SET saldo = saldo + 1250.80 WHERE id_user = '3987655678';
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- cadastrando celular do usuario B
+UPDATE usuarios SET celular = '15991003553' WHERE id_user = '99876556782';
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- buscando usuários existentes pelo ID
+SELECT * FROM usuarios WHERE id_user = '14565436782';
+SELECT * FROM usuarios WHERE id_user = '37567876542';
+SELECT * FROM usuarios WHERE id_user = '44565434213';
+SELECT * FROM usuarios WHERE id_user = '54654367865';
+SELECT * FROM usuarios WHERE id_user = '66545678765';
+SELECT * FROM usuarios WHERE id_user = '99876556782';
+
+-- buscando usuários inexistentes pelo ID
+SELECT * FROM usuarios WHERE id_user = '12565436782';
+SELECT * FROM usuarios WHERE id_user = '75565434213';
+SELECT * FROM usuarios WHERE id_user = '99976556782';
+
+\echo file ARQUIVO_JOGOS
+\echo index jogos_idx
+\echo index titulo_idx
+
+-- jogo A
+INSERT INTO jogos VALUES ('Meia-Vida', 'Valvula', 'Valvula', '19981119', 29.69);
+\echo file ARQUIVO_JOGOS
+\echo index jogos_idx
+\echo index titulo_idx
+
+-- jogo B
+INSERT INTO jogos VALUES ('Presa', 'Cabeca de Melao Studios', '40K Jogos', '20070711', 44.29);
+\echo file ARQUIVO_JOGOS
+\echo index jogos_idx
+\echo index titulo_idx
+
+-- jogo C
+INSERT INTO jogos VALUES ('Catorze Minutos', 'Antonio Luis', 'Annapurr', '20210819', 51.99);
+\echo file ARQUIVO_JOGOS
+\echo index jogos_idx
+\echo index titulo_idx
+
+-- jogo D, mesmo nome do jogo B
+INSERT INTO jogos VALUES ('Presa', 'Arkano', 'Todd Howard Chess Club', '20170604', 89.99);
+\echo file ARQUIVO_JOGOS
+\echo index jogos_idx
+\echo index titulo_idx
+
+-- jogo E, mesma desenvolvedora do jogo A
+INSERT INTO jogos VALUES ('Esquerda 4 Morto 2', 'Valvula', 'Valvula', '20091117', 20.69);
+\echo file ARQUIVO_JOGOS
+\echo index jogos_idx
+\echo index titulo_idx
+
+-- jogo F
+INSERT INTO jogos VALUES ('Cavaleiro Vazio', 'Time Cereja', 'Time Cereja', '20170224', 27.99);
+\echo file ARQUIVO_JOGOS
+\echo index jogos_idx
+\echo index titulo_idx
+
+-- buscando jogos existentes pelo ID
+SELECT * FROM jogos WHERE id_game = '00000000';
+SELECT * FROM jogos WHERE id_game = '00000002';
+SELECT * FROM jogos WHERE id_game = '00000004';
+
+-- buscando jogos inexistentes pelo ID
+SELECT * FROM jogos WHERE id_game = '00000011';
+SELECT * FROM jogos WHERE id_game = '00000451';
+
+\q

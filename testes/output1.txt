@@ -1,0 +1,99 @@
+-- OPERAÇÕES CONTEMPLADAS PELO CASO DE TESTE:
+-- ÁRVORE-B DE ORDEM 3
+-- CADASTRO DE USUARIO
+-- DEPÓSITO DE SALDO
+-- IMPRIMIR ARQUIVO USUARIOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE USUARIOS
+
+\echo file ARQUIVO_USUARIOS
+ERRO: Arquivo vazio
+\echo index usuarios_idx
+ERRO: Arquivo vazio
+
+-- usuario A
+INSERT INTO usuarios VALUES ('66545678765', 'SnailThemi', 'mariaeugenia@gmail.com');
+OK
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000000.00;########################################################
+\echo index usuarios_idx
+001665456787650000###############T*********
+
+-- usuario B
+INSERT INTO usuarios VALUES ('99876556782', 'ezPz#Fireclan', 'ga.augusto@gmail.com');
+OK
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000000.00;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;***********;0000000000.00;#######################################################
+\echo index usuarios_idx
+002665456787650000998765567820001T*********
+
+-- usuario C
+INSERT INTO usuarios VALUES ('44565434213', 'forninhocaiu', 'ge.santana@gmail.com');
+OK
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000000.00;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;***********;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000000.00;########################################################
+\echo index usuarios_idx
+001445654342130002###############T*********001998765567820001###############T*********001665456787650000###############F000001***
+
+-- usuario D
+INSERT INTO usuarios VALUES ('54654367865', 'batata_doce', 'galmeida@gmail.com');
+OK
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000000.00;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;***********;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000000.00;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000000000.00;###########################################################
+\echo index usuarios_idx
+002445654342130002546543678650003T*********001998765567820001###############T*********001665456787650000###############F000001***
+
+-- usuario com ID duplicado
+INSERT INTO usuarios VALUES ('66545678765', 'linkinpark1991', 'roberta91@gmail.com');
+ERRO: Ja existe um registro com a chave 66545678765
+INSERT INTO usuarios VALUES ('99876556782', 'linkinpark1991', 'roberta91@gmail.com');
+ERRO: Ja existe um registro com a chave 99876556782
+INSERT INTO usuarios VALUES ('44565434213', 'linkinpark1991', 'roberta91@gmail.com');
+ERRO: Ja existe um registro com a chave 44565434213
+INSERT INTO usuarios VALUES ('54654367865', 'linkinpark1991', 'roberta91@gmail.com');
+ERRO: Ja existe um registro com a chave 54654367865
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000000.00;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;***********;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000000.00;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000000000.00;###########################################################
+\echo index usuarios_idx
+002445654342130002546543678650003T*********001998765567820001###############T*********001665456787650000###############F000001***
+
+-- depósito para o usuario C
+UPDATE usuarios SET saldo = saldo + 5 WHERE id_user = '44565434213';
+OK
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000000.00;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;***********;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000005.00;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000000000.00;###########################################################
+\echo index usuarios_idx
+002445654342130002546543678650003T*********001998765567820001###############T*********001665456787650000###############F000001***
+
+-- depósito para um usuario inexistente
+UPDATE usuarios SET saldo = saldo + 1250.80 WHERE id_user = '3987655678';
+ERRO: Registro nao encontrado
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000000.00;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;***********;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000005.00;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000000000.00;###########################################################
+\echo index usuarios_idx
+002445654342130002546543678650003T*********001998765567820001###############T*********001665456787650000###############F000001***
+
+-- depósito válido para o usuario A utilizando todos os dígitos disponíveis para o saldo
+UPDATE usuarios SET saldo = saldo + 4815002008.12 WHERE id_user = '66545678765';
+OK
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;4815002008.12;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;***********;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000005.00;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000000000.00;###########################################################
+\echo index usuarios_idx
+002445654342130002546543678650003T*********001998765567820001###############T*********001665456787650000###############F000001***
+
+-- depósito válido para o usuario D
+UPDATE usuarios SET saldo = saldo + 190 WHERE id_user = '54654367865';
+OK
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;4815002008.12;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;***********;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000005.00;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000000190.00;###########################################################
+\echo index usuarios_idx
+002445654342130002546543678650003T*********001998765567820001###############T*********001665456787650000###############F000001***
+
+-- operação com valor invalido para o usuario C
+UPDATE usuarios SET saldo = saldo + 0 WHERE id_user = '54654367865';
+ERRO: Valor invalido
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;4815002008.12;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;***********;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000005.00;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000000190.00;###########################################################
+\echo index usuarios_idx
+002445654342130002546543678650003T*********001998765567820001###############T*********001665456787650000###############F000001***
+
+\q

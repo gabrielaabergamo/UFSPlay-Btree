@@ -1,0 +1,111 @@
+-- OPERAÇÕES CONTEMPLADAS PELO CASO DE TESTE:
+-- ÁRVORE-B DE ORDEM 3
+-- CADASTRO DE JOGO
+-- CADASTRO DE CATEGORIA
+-- LISTAGEM DE JOGOS POR CATEGORIA
+-- IMPRIMIR ARQUIVO JOGOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE JOGOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE TITULO
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE DATA
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE CATEGORIAS
+
+-- jogo A
+INSERT INTO jogos VALUES ('Meia-Vida', 'Valvula', 'Valvula', '19981119', 29.69);
+
+-- jogo B
+INSERT INTO jogos VALUES ('Presa', 'Cabeca de Melao Studios', '40K Jogos', '20070711', 44.29);
+
+-- jogo C
+INSERT INTO jogos VALUES ('Catorze Minutos', 'Antonio Luis', 'Annapurr', '20210819', 51.99);
+
+-- jogo D, mesma desenvolvedora do jogo A
+INSERT INTO jogos VALUES ('Esquerda 4 Morto 2', 'Valvula', 'Valvula', '20091117', 20.69);
+
+-- jogo E
+INSERT INTO jogos VALUES ('Cavaleiro Vazio', 'Time Cereja', 'Time Cereja', '20170224', 27.99);
+
+-- jogo F
+INSERT INTO jogos VALUES ('Katana -1', 'Askiihard', 'Retornar Analogo', '20190418', 28.99);
+
+-- jogo G
+INSERT INTO jogos VALUES ('Overtale', 'Tobias Raposa', 'Tobias Raposa', '20190418', 19.99);
+
+-- jogo H
+INSERT INTO jogos VALUES ('Pluto', 'Supertiny Games', 'Supertiny Games', '20200917', 47.49);
+
+-- jogo I
+INSERT INTO jogos VALUES ('After Your Eyes', 'HelloWorld Games', 'Groundbound Games', '20210408', 20.69);
+
+\echo file ARQUIVO_JOGOS
+\echo index jogos_idx
+\echo index titulo_idx
+
+-- cadastrar categorias para jogos existentes
+UPDATE jogos SET categorias = array_append(categorias, 'FPS') WHERE titulo = 'Meia-Vida';
+\echo file ARQUIVO_JOGOS
+\echo index categorias_secundario_idx
+\echo index categorias_primario_idx
+
+UPDATE jogos SET categorias = array_append(categorias, 'Metroidvania') WHERE titulo = 'Cavaleiro Vazio';
+\echo file ARQUIVO_JOGOS
+\echo index categorias_secundario_idx
+\echo index categorias_primario_idx
+
+UPDATE jogos SET categorias = array_append(categorias, 'Plataforma') WHERE titulo = 'Cavaleiro Vazio';
+\echo file ARQUIVO_JOGOS
+\echo index categorias_secundario_idx
+\echo index categorias_primario_idx
+
+UPDATE jogos SET categorias = array_append(categorias, 'Acao') WHERE titulo = 'Cavaleiro Vazio';
+\echo file ARQUIVO_JOGOS
+\echo index categorias_secundario_idx
+\echo index categorias_primario_idx
+
+UPDATE jogos SET categorias = array_append(categorias, 'FPS') WHERE titulo = 'Esquerda 4 Morto 2';
+\echo file ARQUIVO_JOGOS
+\echo index categorias_secundario_idx
+\echo index categorias_primario_idx
+
+UPDATE jogos SET categorias = array_append(categorias, 'Acao') WHERE titulo = 'Pluto';
+\echo file ARQUIVO_JOGOS
+\echo index categorias_secundario_idx
+\echo index categorias_primario_idx
+
+UPDATE jogos SET categorias = array_append(categorias, 'Acao') WHERE titulo = 'Katana -1';
+\echo index categorias_secundario_idx
+\echo index categorias_primario_idx
+
+UPDATE jogos SET categorias = array_append(categorias, 'Plataforma') WHERE titulo = 'Katana -1';
+\echo file ARQUIVO_JOGOS
+\echo index categorias_secundario_idx
+\echo index categorias_primario_idx
+
+-- cadastrar categorias para jogos inexistentes
+UPDATE jogos SET categorias = array_append(categorias, 'Esporte') WHERE titulo = 'PES 2077';
+UPDATE jogos SET categorias = array_append(categorias, 'Cooperativo') WHERE titulo = 'Queimei o Fogao e Ele Caiu Socorro';
+UPDATE jogos SET categorias = array_append(categorias, 'Simulacao') WHERE titulo = 'AsiaTruck Simulator';
+
+\echo file ARQUIVO_JOGOS
+\echo index categorias_secundario_idx
+\echo index categorias_primario_idx
+
+-- cadastrar categorias repetidas
+UPDATE jogos SET categorias = array_append(categorias, 'FPS') WHERE titulo = 'Meia-Vida';
+UPDATE jogos SET categorias = array_append(categorias, 'Metroidvania') WHERE titulo = 'Cavaleiro Vazio';
+
+\echo file ARQUIVO_JOGOS
+\echo index categorias_secundario_idx
+\echo index categorias_primario_idx
+
+-- listar jogos de certa categoria
+SELECT * FROM jogos WHERE 'FPS' = ANY (categorias) ORDER BY id_game ASC;
+
+SELECT * FROM jogos WHERE 'Plataforma' = ANY (categorias) ORDER BY id_game ASC;
+
+SELECT * FROM jogos WHERE 'Acao' = ANY (categorias) ORDER BY id_game ASC;
+
+SELECT * FROM jogos WHERE 'Metroidvania' = ANY (categorias) ORDER BY id_game ASC;
+
+SELECT * FROM jogos WHERE 'Simulacao' = ANY (categorias) ORDER BY id_game ASC;
+
+\q

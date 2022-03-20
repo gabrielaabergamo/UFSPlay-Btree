@@ -1,0 +1,78 @@
+SET BTREE_ORDER 5;
+
+-- OPERAÇÕES CONTEMPLADAS PELO CASO DE TESTE:
+-- ÁRVORE-B DE ORDEM 5
+-- CADASTRO DE USUARIO
+-- CADASTRO DE CELULAR
+-- CADASTRO DE JOGO
+-- IMPRIMIR ARQUIVO USUARIOS
+-- IMPRIMIR ARQUIVO JOGOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE USUARIOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE JOGOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE TITULO
+
+-- usuario A
+INSERT INTO usuarios VALUES ('66545678765', 'SnailThemi', 'mariaeugenia@gmail.com');
+
+-- usuario B
+INSERT INTO usuarios VALUES ('99876556782', 'ezPz#Fireclan', 'ga.augusto@gmail.com');
+
+-- usuario C
+INSERT INTO usuarios VALUES ('44565434213', 'forninhocaiu', 'ge.santana@gmail.com');
+
+-- usuario D
+INSERT INTO usuarios VALUES ('54654367865', 'batata_doce', 'galmeida@gmail.com');
+
+-- usuario E
+INSERT INTO usuarios VALUES ('37567876542', 'Erlkonigin', 'melissa@gmail.com');
+
+-- usuario F, email igual ao do usuario E
+INSERT INTO usuarios VALUES ('14565436782', 'melange', 'melissa@gmail.com');
+
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- cadastrando celular do usuario B
+UPDATE usuarios SET celular = '15991003553' WHERE id_user = '99876556782';
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- cadastrando outro numero no mesmo usuario
+UPDATE usuarios SET celular = '15991004554' WHERE id_user = '99876556782';
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- cadastrando numero de usuario inexistente
+UPDATE usuarios SET celular = '15991358542' WHERE id_user = '99999999999';
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+\echo file ARQUIVO_JOGOS
+\echo index jogos_idx
+\echo index titulo_idx
+
+-- jogo A
+INSERT INTO jogos VALUES ('Meia-Vida', 'Valvula', 'Valvula', '19981119', 29.69);
+\echo file ARQUIVO_JOGOS
+\echo index jogos_idx
+\echo index titulo_idx
+
+-- jogo B
+INSERT INTO jogos VALUES ('Presa', 'Cabeca de Melao Studios', '40K Jogos', '20070711', 44.29);
+\echo file ARQUIVO_JOGOS
+\echo index jogos_idx
+\echo index titulo_idx
+
+-- jogo C
+INSERT INTO jogos VALUES ('Catorze Minutos', 'Antonio Luis', 'Annapurr', '20210819', 51.99);
+\echo file ARQUIVO_JOGOS
+\echo index jogos_idx
+\echo index titulo_idx
+
+-- jogo D, mesmo nome do jogo B
+INSERT INTO jogos VALUES ('Presa', 'Arkano', 'Todd Howard Chess Club', '20170604', 89.99);
+\echo file ARQUIVO_JOGOS
+\echo index jogos_idx
+\echo index titulo_idx
+
+\q

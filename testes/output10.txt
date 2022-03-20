@@ -1,0 +1,59 @@
+-- OPERAÇÕES CONTEMPLADAS PELO CASO DE TESTE:
+-- ÁRVORE-B DE ORDEM 4
+-- COM ARQUIVOS
+-- LISTAGEM DE JOGOS POR CATEGORIA
+-- IMPRIMIR ARQUIVO JOGOS
+-- IMPRIMIR ARQUIVO COMPRAS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE JOGOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE TITULO
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE COMPRAS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE DATA
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE CATEGORIAS
+
+\echo file ARQUIVO_JOGOS
+00000000;Meia-Vida;Valvula;Valvula;19981119;0000000029.69;FPS;##################################################################################################################################################################################################00000001;Presa;Cabeca de Melao Studios;40K Jogos;20070711;0000000044.29;;#######################################################################################################################################################################################00000002;Catorze Minutos;Antonio Luis;Annapurr;20210819;0000000051.99;;#########################################################################################################################################################################################00000003;Esquerda 4 Morto 2;Valvula;Valvula;20091117;0000000020.69;FPS;#########################################################################################################################################################################################00000004;Cavaleiro Vazio;Time Cereja;Time Cereja;20170224;0000000027.99;Metroidvania|Plataforma|Acao;###########################################################################################################################################################00000005;Katana -1;Askiihard;Retornar Analogo;20190418;0000000028.99;Acao|Plataforma;###########################################################################################################################################################################00000006;Overtale;Tobias Raposa;Tobias Raposa;20190418;0000000019.99;;##########################################################################################################################################################################################00000007;Pluto;Supertiny Games;Supertiny Games;20200917;0000000047.49;Acao;#####################################################################################################################################################################################00000008;After Your Eyes;HelloWorld Games;Groundbound Games;20210408;0000000020.69;;############################################################################################################################################################################
+\echo file ARQUIVO_COMPRAS
+445654342132021092000000000375678765422021092400000004375678765422021100300000008665456787652021100500000005
+\echo index jogos_idx
+002000000000000000000010001############T************002000000030003000000040004############T************002000000020002000000050005############F000001003***003000000060006000000070007000000080008T************
+\echo index compras_idx
+0023756787654200000004000137567876542000000080002#######################T************00166545678765000000050003##############################################T************00144565434213000000000000##############################################F000001******
+\echo index titulo_idx
+003After Your Eyes############################00000008Catorze Minutos############################00000002Cavaleiro Vazio############################00000004T************003Overtale###################################00000006Pluto######################################00000007Presa######################################00000001T************002Esquerda 4 Morto 2#########################00000003Meia-Vida##################################00000000###################################################F000003001***001Katana -1##################################00000005######################################################################################################T************
+\echo index data_user_game_idx
+002202109204456543421300000000202109243756787654200000004###########################T************001202110056654567876500000005######################################################T************001202110033756787654200000008######################################################F000001******
+\echo index categorias_secundario_idx
+Acao##############0004FPS###############0000Metroidvania######0002Plataforma########0003
+\echo index categorias_primario_idx
+00000000000100000003-00100000004-00100000004000600000004000500000005000700000005-00100000007-001
+
+-- listar jogos de certa categoria
+SELECT * FROM jogos WHERE 'FPS' = ANY (categorias) ORDER BY id_game ASC;
+Registros secundários percorridos: 2 1
+Registros primários percorridos: 0 1
+00000000, Meia-Vida, Valvula, Valvula, 19981119, 29.69
+00000003, Esquerda 4 Morto 2, Valvula, Valvula, 20091117, 20.69
+
+SELECT * FROM jogos WHERE 'Plataforma' = ANY (categorias) ORDER BY id_game ASC;
+Registros secundários percorridos: 2 3
+Registros primários percorridos: 3 6
+00000004, Cavaleiro Vazio, Time Cereja, Time Cereja, 20170224, 27.99
+00000005, Katana -1, Askiihard, Retornar Analogo, 20190418, 28.99
+
+SELECT * FROM jogos WHERE 'Acao' = ANY (categorias) ORDER BY id_game ASC;
+Registros secundários percorridos: 2 1 0
+Registros primários percorridos: 4 5 7
+00000004, Cavaleiro Vazio, Time Cereja, Time Cereja, 20170224, 27.99
+00000005, Katana -1, Askiihard, Retornar Analogo, 20190418, 28.99
+00000007, Pluto, Supertiny Games, Supertiny Games, 20200917, 47.49
+
+SELECT * FROM jogos WHERE 'Metroidvania' = ANY (categorias) ORDER BY id_game ASC;
+Registros secundários percorridos: 2
+Registros primários percorridos: 2
+00000004, Cavaleiro Vazio, Time Cereja, Time Cereja, 20170224, 27.99
+
+SELECT * FROM jogos WHERE 'Simulacao' = ANY (categorias) ORDER BY id_game ASC;
+Registros secundários percorridos: 2 3 
+AVISO: Nenhum registro encontrado
+
+\q

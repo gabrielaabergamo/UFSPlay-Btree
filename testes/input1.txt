@@ -1,0 +1,64 @@
+-- OPERAÇÕES CONTEMPLADAS PELO CASO DE TESTE:
+-- ÁRVORE-B DE ORDEM 3
+-- CADASTRO DE USUARIO
+-- DEPÓSITO DE SALDO
+-- IMPRIMIR ARQUIVO USUARIOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE USUARIOS
+
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- usuario A
+INSERT INTO usuarios VALUES ('66545678765', 'SnailThemi', 'mariaeugenia@gmail.com');
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- usuario B
+INSERT INTO usuarios VALUES ('99876556782', 'ezPz#Fireclan', 'ga.augusto@gmail.com');
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- usuario C
+INSERT INTO usuarios VALUES ('44565434213', 'forninhocaiu', 'ge.santana@gmail.com');
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- usuario D
+INSERT INTO usuarios VALUES ('54654367865', 'batata_doce', 'galmeida@gmail.com');
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- usuario com ID duplicado
+INSERT INTO usuarios VALUES ('66545678765', 'linkinpark1991', 'roberta91@gmail.com');
+INSERT INTO usuarios VALUES ('99876556782', 'linkinpark1991', 'roberta91@gmail.com');
+INSERT INTO usuarios VALUES ('44565434213', 'linkinpark1991', 'roberta91@gmail.com');
+INSERT INTO usuarios VALUES ('54654367865', 'linkinpark1991', 'roberta91@gmail.com');
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- depósito para o usuario C
+UPDATE usuarios SET saldo = saldo + 5 WHERE id_user = '44565434213';
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- depósito para um usuario inexistente
+UPDATE usuarios SET saldo = saldo + 1250.80 WHERE id_user = '3987655678';
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- depósito válido para o usuario A utilizando todos os dígitos disponíveis para o saldo
+UPDATE usuarios SET saldo = saldo + 4815002008.12 WHERE id_user = '66545678765';
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- depósito válido para o usuario D
+UPDATE usuarios SET saldo = saldo + 190 WHERE id_user = '54654367865';
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+-- operação com valor invalido para o usuario C
+UPDATE usuarios SET saldo = saldo + 0 WHERE id_user = '54654367865';
+\echo file ARQUIVO_USUARIOS
+\echo index usuarios_idx
+
+\q
