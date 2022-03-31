@@ -858,30 +858,59 @@ void criar_usuarios_idx() {
 /* Cria o índice primário jogos_idx */
 void criar_jogos_idx() {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "criar_jogos_idx");
+    char jogos_str[TAM_CHAVE_JOGOS_IDX + 1];
+    for(unsigned i = 0; i < qtd_registros_jogos; i++){
+        Jogo j = recuperar_registro_jogo(i);
+
+        sprintf(jogos_str, "%s%04d", j.id_game, i);
+        btree_insert(jogos_str, &jogos_idx);
+    }
+    //printf(ERRO_NAO_IMPLEMENTADO, "criar_jogos_idx");
 }
 
 /* Cria o índice primário compras_idx */
 void criar_compras_idx() {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "criar_compras_idx");
+    char compras_str[TAM_CHAVE_COMPRAS_IDX + 1];
+    for(unsigned i = 0; i < qtd_registros_compras; i++){
+        Compra c = recuperar_registro_compra(i);
+
+        sprintf(compras_str, "%s%s%04d", c.id_user_dono, c.id_game, i);
+        btree_insert(compras_str, &compras_idx);
+    }
+    //printf(ERRO_NAO_IMPLEMENTADO, "criar_compras_idx");
 }
 
 /* Cria o índice secundário titulo_idx */
 void criar_titulo_idx() {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "criar_titulo_idx");
+    char titulos_str[TAM_ARQUIVO_TITULO_IDX + 1];
+    for(unsigned i = 0; i < qtd_registros_jogos; i++){
+        Jogo j = recuperar_registro_jogo(i);
+
+        sprintf(titulos_str, "%s%04d", j.titulo, i);
+        btree_insert(titulos_str, &titulo_idx);
+    }
+    //printf(ERRO_NAO_IMPLEMENTADO, "criar_titulo_idx");
 }
 
 /* Cria o índice secundário data_user_game_idx */
 void criar_data_user_game_idx() {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
+    char data_user_game_str[TAM_ARQUIVO_DATA_USER_GAME_IDX + 1];
+    for(unsigned i = 0; i < qtd_registros_compras; i++){
+        Compra c = recuperar_registro_compra(i);
+
+        sprintf(data_user_game_str, "%s%s%s%04d", c.id_user_dono, c.id_game, c.data_compra ,i);
+        btree_insert(data_user_game_str, &data_user_game_idx);
+    }
     printf(ERRO_NAO_IMPLEMENTADO, "criar_data_user_game_idx");
 }
 
 /* Cria os índices (secundário e primário) de categorias_idx */
 void criar_categorias_idx() {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
+    
     printf(ERRO_NAO_IMPLEMENTADO, "criar_categorias_idx");
 }
 
