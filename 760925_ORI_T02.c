@@ -904,14 +904,14 @@ void criar_data_user_game_idx() {
         sprintf(data_user_game_str, "%s%s%s%04d", c.id_user_dono, c.id_game, c.data_compra ,i);
         btree_insert(data_user_game_str, &data_user_game_idx);
     }
-    printf(ERRO_NAO_IMPLEMENTADO, "criar_data_user_game_idx");
+    //printf(ERRO_NAO_IMPLEMENTADO, "criar_data_user_game_idx");
 }
 
 /* Cria os índices (secundário e primário) de categorias_idx */
 void criar_categorias_idx() {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
     
-    printf(ERRO_NAO_IMPLEMENTADO, "criar_categorias_idx");
+    //printf(ERRO_NAO_IMPLEMENTADO, "criar_categorias_idx");
 }
 
 
@@ -1246,12 +1246,101 @@ bool inverted_list_binary_search(int* result, bool exibir_caminho, char *chave, 
 /* Funções de manipulação de Árvores-B */
 void btree_insert(char *chave, btree *t) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "btree_insert");
+    if (!t->rrn_raiz) {
+        btree_node aux = btree_node_malloc(t);
+        aux.folha = true;
+        aux.this_rrn = 0;
+        aux.qtd_chaves = 1;
+        t->qtd_nos++;
+        t->rrn_raiz = aux.this_rrn;
+        
+
+        strcpy(aux.chaves[0], chave);
+        btree_write(aux, t);
+
+        btree_node_free(aux);
+    } else {
+        promovido_aux promocao = btree_insert_aux(chave, t->rrn_raiz, t);
+
+        if(*promocao.chave_promovida != '\0'){
+            btree_node aux = btree_node_malloc(t);
+            aux.folha = false;
+            aux.qtd_chaves = 1;
+            aux.this_rrn = t->qtd_nos;
+            strcpy(aux.chaves[0], promocao.chave_promovida);
+            aux.filhos[0] = t->rrn_raiz;
+            aux.filhos[1] = promocao.filho_direito;
+
+            t->rrn_raiz = aux.this_rrn;
+            t->qtd_nos++;
+
+            btree_write(aux, t);
+            btree_node_free(aux);
+        }
+    }
+   //printf(ERRO_NAO_IMPLEMENTADO, "btree_insert");
 }
 
 promovido_aux btree_insert_aux(char *chave, int rrn, btree *t) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "btree_insert_aux");
+    btree_node aux = btree_read(rrn, t);
+
+    if(aux.folha){
+        if(aux.qtd_chaves < btree_order - 1){
+            int n = aux.qtd_chaves - 1;
+
+            while(n >=0 && t->compar(chave, aux.chaves[n]) < 0){
+                strcpy(aux.chaves[n+1], aux.chaves[n]);
+                n--;
+            }
+
+            strcpy(aux.chaves[n+1], chave);
+            aux.qtd_chaves++;
+            aux.this_rrn = rrn;
+            promovido_aux promocao;
+            *promocao.chave_promovida = '\0';
+            promocao.filho_direito = -1;
+            btree_write(aux, t);
+            btree_node_free(aux);
+            return promocao;
+        }
+        btree_node_free(aux);
+        return btree_divide(chave, -1, rrn, t);
+    }
+    int n = aux.qtd_chaves - 1;
+    while(n >= 0 && t->compar(chave, aux.chaves[n]) < 0){
+        n--;
+    }
+    n++;
+
+    promovido_aux promocao = btree_insert_aux(chave, aux.filhos[n], t);
+
+    if(*promocao.chave_promovida != '\0'){
+        strcpy(chave, promocao.chave_promovida);
+        if(aux.qtd_chaves < btree_order - 1){
+            n = aux.qtd_chaves - 1;
+            while(n >= 0 && t->compar(chave, aux.chaves[n]) < 0){
+                strcpy(aux.chaves[n+1], aux.chaves[n]);
+                aux.filhos[n+2] = aux.filhos[n+1];
+                n--;
+            }
+
+            strcpy(aux.chaves[n+1], chave);
+            aux.filhos[n+2] = promocao.filho_direito;
+            aux.qtd_chaves++;
+            aux.this_rrn = rrn;
+            *promocao.chave_promovida = '\0';
+            promocao.filho_direito = -1;
+            btree_write(aux, t);
+            btree_node_free(aux);
+            return promocao;
+        }
+        *promocao.chave_promovida = '\0';
+        promocao.filho_direito = -1;
+        btree_node_free(aux);
+        return promocao;
+    }
+    //printf(ERRO_NAO_IMPLEMENTADO, "btree_insert_aux");
 }
 
 promovido_aux btree_divide(char *chave, int filho_direito, int rrn, btree *t) {
