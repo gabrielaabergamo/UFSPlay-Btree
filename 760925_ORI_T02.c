@@ -1345,13 +1345,80 @@ promovido_aux btree_insert_aux(char *chave, int rrn, btree *t) {
 
 promovido_aux btree_divide(char *chave, int filho_direito, int rrn, btree *t) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "btree_divide");
+    btree_node aux  = btree_read(rrn, t);
+    int n = aux.qtd_chaves - 1;
+    bool flag = false;
+    btree_node nodeAux = btree_node_malloc(t);
+    nodeAux.folha = aux.folha;
+    nodeAux.qtd_chaves = (btree_order - 1)/2;
+
+    for(int i = nodeAux.qtd_chaves - 1; j >= 0; j--){
+        if(!flag && (t->compar(chave, aux.chaves[n]) > 0)){
+            strcpy(nodeAux.chaves[i], chave);
+            nodeAux.filhos[i+1] = filho_direito;
+            flag = true;
+        } else {
+            strcpy(nodeAux.chaves[i], aux.chaves[j]);
+            nodeAux.filhos[i+1] = aux.filhos[n+1];
+            n--;
+        }
+    }
+
+    if(!flag){
+        while(n >= 0 && (t->compar(chave, aux.chaves[n]) < 0)){
+            strcpy(aux.chaves[n+1], aux.chaves[n]);
+            aux.filhos[n+2] = aux.filhos[n+1];
+            n--;
+        }
+        strcpy(aux.chaves[n+1], chave);
+        aux.filhos[n+2] = filho_direito;
+    }
+
+    promovido_aux promocao;
+    strcpy(promocao.chave_promovida, aux.chaves[btree_order / 2]);
+    nodeAux.filhos[0] = aux.filhos[(btree_order / 2) + 1];
+    aux.qtd_chaves = btree_order / 2;
+    nodeAux.this_rrn = t->qtd_nos;
+    promocao.filho_direito = nodeAux.this_rrn;
+    t->qtd_nos++;
+    btree_write(aux, t);
+    btree_write(nodeAux, t);
+    btree_node_free(aux);
+    btree_node_free(nodeAux);
+
+    return promocao;
+    //printf(ERRO_NAO_IMPLEMENTADO, "btree_divide");
 }
 
 bool btree_search(char *result, bool exibir_caminho, char *chave, int rrn, btree *t) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "btree_search");
-    return false;
+    if(rrn == -1){
+        return false;
+    }
+
+    btree_node aux = btree_read(rrn, t);
+
+    if(exibir_caminho){
+        printf(" %d", rrn);
+    }
+
+    int n;
+    if(btree_binary_search(&n, exibir_caminho, chave, &aux, t)){
+        if(result){
+            strcpy(result, aux.chaves[n]);
+        }
+        btree_node_free(aux);
+        return true;
+    }
+
+    if(aux.folha){
+        btree_node_free(aux);
+        return false;
+    }
+
+    return btree_search(result, exibir_caminho, chave, aux.filhos[n], t);
+
+    //printf(ERRO_NAO_IMPLEMENTADO, "btree_search");
 }
 
 bool btree_binary_search(int *result, bool exibir_caminho, char* chave, btree_node* node, btree* t) {
