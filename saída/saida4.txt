@@ -1,0 +1,190 @@
+-- OPERAÇÕES CONTEMPLADAS PELO CASO DE TESTE:
+-- ÁRVORE-B DE ORDEM 3
+-- CADASTRO DE USUARIO
+-- CADASTRO DE JOGO
+-- DEPÓSITO DE SALDO
+-- BUSCA DE USUARIOS POR ID
+-- BUSCA DE JOGOS POR ID
+-- LISTAGEM DE USUARIOS
+-- IMPRIMIR ARQUIVO USUARIOS
+-- IMPRIMIR ARQUIVO JOGOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE USUARIOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE JOGOS
+-- IMPRIMIR ARQUIVO DE ÍNDICE DE TITULO
+
+-- usuario A
+INSERT INTO usuarios VALUES ('66545678765', 'SnailThemi', 'mariaeugenia@gmail.com');
+OK
+SELECT * FROM usuarios ORDER BY id_user ASC;
+SELECT * FROM usuarios WHERE id_user = '66545678765';
+Nos percorridos: 0 0
+66545678765, SnailThemi, mariaeugenia@gmail.com, ***********, 0.00
+SELECT * FROM usuarios WHERE id_user = '99876556782';
+Nos percorridos: 0 0
+ERRO: Registro nao encontrado
+
+-- usuario B
+INSERT INTO usuarios VALUES ('99876556782', 'ezPz#Fireclan', 'ga.augusto@gmail.com');
+OK
+SELECT * FROM usuarios ORDER BY id_user ASC;
+SELECT * FROM usuarios WHERE id_user = '99876556782';
+Nos percorridos: 0 1
+99876556782, ezPz#Fireclan, ga.augusto@gmail.com, ***********, 0.00
+
+-- usuario C
+INSERT INTO usuarios VALUES ('44565434213', 'forninhocaiu', 'ge.santana@gmail.com');
+OK
+SELECT * FROM usuarios ORDER BY id_user ASC;
+
+-- usuario D
+INSERT INTO usuarios VALUES ('54654367865', 'batata_doce', 'galmeida@gmail.com');
+OK
+SELECT * FROM usuarios ORDER BY id_user ASC;
+
+-- usuario E
+INSERT INTO usuarios VALUES ('37567876542', 'Erlkonigin', 'melissa@gmail.com');
+OK
+SELECT * FROM usuarios ORDER BY id_user ASC;
+
+-- usuario F, email igual ao do usuario E
+INSERT INTO usuarios VALUES ('14565436782', 'melange', 'melissa@gmail.com');
+OK
+SELECT * FROM usuarios ORDER BY id_user ASC;
+
+-- depósito para o usuario C
+UPDATE usuarios SET saldo = saldo + 5 WHERE id_user = '44565434213';
+OK
+
+-- depósito válido para o usuario D
+UPDATE usuarios SET saldo = saldo + 190.33 WHERE id_user = '54654367865';
+OK
+
+-- depósito para um usuario inexistente
+UPDATE usuarios SET saldo = saldo + 1250.80 WHERE id_user = '3987655678';
+ERRO: Registro nao encontrado
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000000.00;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;***********;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000005.00;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000000190.33;###########################################################37567876542;Erlkonigin;melissa@gmail.com;***********;0000000000.00;#############################################################14565436782;melange;melissa@gmail.com;***********;0000000000.00;################################################################
+\echo index usuarios_idx
+002145654367820005375678765420004T*********001998765567820001###############T*********002445654342130002665456787650000F000003001001546543678650003###############T*********
+
+-- cadastrando celular do usuario B
+UPDATE usuarios SET celular = '15991003553' WHERE id_user = '99876556782';
+OK
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000000.00;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;15991003553;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000005.00;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000000190.33;###########################################################37567876542;Erlkonigin;melissa@gmail.com;***********;0000000000.00;#############################################################14565436782;melange;melissa@gmail.com;***********;0000000000.00;################################################################
+\echo index usuarios_idx
+002145654367820005375678765420004T*********001998765567820001###############T*********002445654342130002665456787650000F000003001001546543678650003###############T*********
+
+-- buscando usuários existentes pelo ID
+SELECT * FROM usuarios WHERE id_user = '14565436782';
+Nos percorridos: 2 1 0 0 1 0
+14565436782, melange, melissa@gmail.com, ***********, 0.00
+SELECT * FROM usuarios WHERE id_user = '37567876542';
+Nos percorridos: 2 1 0 0 1
+37567876542, Erlkonigin, melissa@gmail.com, ***********, 0.00
+SELECT * FROM usuarios WHERE id_user = '44565434213';
+Nos percorridos: 2 1 0
+44565434213, forninhocaiu, ge.santana@gmail.com, ***********, 5.00
+SELECT * FROM usuarios WHERE id_user = '54654367865';
+Nos percorridos: 2 1 0 3 0
+54654367865, batata_doce, galmeida@gmail.com, ***********, 190.33
+SELECT * FROM usuarios WHERE id_user = '66545678765';
+Nos percorridos: 2 1
+66545678765, SnailThemi, mariaeugenia@gmail.com, ***********, 0.00
+SELECT * FROM usuarios WHERE id_user = '99876556782';
+Nos percorridos: 2 1 1 0
+99876556782, ezPz#Fireclan, ga.augusto@gmail.com, 15991003553, 0.00
+
+-- buscando usuários inexistentes pelo ID
+SELECT * FROM usuarios WHERE id_user = '12565436782';
+Nos percorridos: 2 1 0 0 1 0
+ERRO: Registro nao encontrado
+SELECT * FROM usuarios WHERE id_user = '75565434213';
+Nos percorridos: 2 1 1 0
+ERRO: Registro nao encontrado
+SELECT * FROM usuarios WHERE id_user = '99976556782';
+Nos percorridos: 2 1 1 0
+ERRO: Registro nao encontrado
+
+\echo file ARQUIVO_JOGOS
+ERRO: Arquivo vazio
+\echo index jogos_idx
+ERRO: Arquivo vazio
+\echo index titulo_idx
+ERRO: Arquivo vazio
+
+-- jogo A
+INSERT INTO jogos VALUES ('Meia-Vida', 'Valvula', 'Valvula', '19981119', 29.69);
+OK
+\echo file ARQUIVO_JOGOS
+00000000;Meia-Vida;Valvula;Valvula;19981119;0000000029.69;;#####################################################################################################################################################################################################
+\echo index jogos_idx
+001000000000000############T*********
+\echo index titulo_idx
+001Meia-Vida##################################00000000###################################################T*********
+
+-- jogo B
+INSERT INTO jogos VALUES ('Presa', 'Cabeca de Melao Studios', '40K Jogos', '20070711', 44.29);
+OK
+\echo file ARQUIVO_JOGOS
+00000000;Meia-Vida;Valvula;Valvula;19981119;0000000029.69;;#####################################################################################################################################################################################################00000001;Presa;Cabeca de Melao Studios;40K Jogos;20070711;0000000044.29;;#######################################################################################################################################################################################
+\echo index jogos_idx
+002000000000000000000010001T*********
+\echo index titulo_idx
+002Meia-Vida##################################00000000Presa######################################00000001T*********
+
+-- jogo C
+INSERT INTO jogos VALUES ('Catorze Minutos', 'Antonio Luis', 'Annapurr', '20210819', 51.99);
+OK
+\echo file ARQUIVO_JOGOS
+00000000;Meia-Vida;Valvula;Valvula;19981119;0000000029.69;;#####################################################################################################################################################################################################00000001;Presa;Cabeca de Melao Studios;40K Jogos;20070711;0000000044.29;;#######################################################################################################################################################################################00000002;Catorze Minutos;Antonio Luis;Annapurr;20210819;0000000051.99;;#########################################################################################################################################################################################
+\echo index jogos_idx
+001000000000000############T*********001000000020002############T*********001000000010001############F000001***
+\echo index titulo_idx
+001Catorze Minutos############################00000002###################################################T*********001Presa######################################00000001###################################################T*********001Meia-Vida##################################00000000###################################################F000001***
+
+-- jogo D, mesmo nome do jogo B
+INSERT INTO jogos VALUES ('Presa', 'Arkano', 'Todd Howard Chess Club', '20170604', 89.99);
+ERRO: Ja existe um registro com a chave Presa
+\echo file ARQUIVO_JOGOS
+00000000;Meia-Vida;Valvula;Valvula;19981119;0000000029.69;;#####################################################################################################################################################################################################00000001;Presa;Cabeca de Melao Studios;40K Jogos;20070711;0000000044.29;;#######################################################################################################################################################################################00000002;Catorze Minutos;Antonio Luis;Annapurr;20210819;0000000051.99;;#########################################################################################################################################################################################
+\echo index jogos_idx
+001000000000000############T*********001000000020002############T*********001000000010001############F000001***
+\echo index titulo_idx
+001Catorze Minutos############################00000002###################################################T*********001Presa######################################00000001###################################################T*********001Meia-Vida##################################00000000###################################################F000001***
+
+-- jogo E, mesma desenvolvedora do jogo A
+INSERT INTO jogos VALUES ('Esquerda 4 Morto 2', 'Valvula', 'Valvula', '20091117', 20.69);
+OK
+\echo file ARQUIVO_JOGOS
+00000000;Meia-Vida;Valvula;Valvula;19981119;0000000029.69;;#####################################################################################################################################################################################################00000001;Presa;Cabeca de Melao Studios;40K Jogos;20070711;0000000044.29;;#######################################################################################################################################################################################00000002;Catorze Minutos;Antonio Luis;Annapurr;20210819;0000000051.99;;#########################################################################################################################################################################################00000003;Esquerda 4 Morto 2;Valvula;Valvula;20091117;0000000020.69;;############################################################################################################################################################################################
+\echo index jogos_idx
+001000000000000############T*********002000000020002000000030003T*********001000000010001############F000001***
+\echo index titulo_idx
+002Catorze Minutos############################00000002Esquerda 4 Morto 2#########################00000003T*********001Presa######################################00000001###################################################T*********001Meia-Vida##################################00000000###################################################F000001***
+
+-- jogo F
+INSERT INTO jogos VALUES ('Cavaleiro Vazio', 'Time Cereja', 'Time Cereja', '20170224', 27.99);
+OK
+\echo file ARQUIVO_JOGOS
+00000000;Meia-Vida;Valvula;Valvula;19981119;0000000029.69;;#####################################################################################################################################################################################################00000001;Presa;Cabeca de Melao Studios;40K Jogos;20070711;0000000044.29;;#######################################################################################################################################################################################00000002;Catorze Minutos;Antonio Luis;Annapurr;20210819;0000000051.99;;#########################################################################################################################################################################################00000003;Esquerda 4 Morto 2;Valvula;Valvula;20091117;0000000020.69;;############################################################################################################################################################################################00000004;Cavaleiro Vazio;Time Cereja;Time Cereja;20170224;0000000027.99;;#######################################################################################################################################################################################
+\echo index jogos_idx
+001000000000000############T*********001000000020002############T*********002000000010001000000030003F000001003001000000040004############T*********
+\echo index titulo_idx
+001Catorze Minutos############################00000002###################################################T*********001Presa######################################00000001###################################################T*********002Cavaleiro Vazio############################00000004Meia-Vida##################################00000000F000003001001Esquerda 4 Morto 2#########################00000003###################################################T*********
+
+-- buscando jogos existentes pelo ID
+SELECT * FROM jogos WHERE id_game = '00000000';
+ERRO: Funcao buscar_jogo_id_menu nao implementada
+SELECT * FROM jogos WHERE id_game = '00000002';
+ERRO: Funcao buscar_jogo_id_menu nao implementada
+SELECT * FROM jogos WHERE id_game = '00000004';
+ERRO: Funcao buscar_jogo_id_menu nao implementada
+
+-- buscando jogos inexistentes pelo ID
+SELECT * FROM jogos WHERE id_game = '00000011';
+ERRO: Funcao buscar_jogo_id_menu nao implementada
+SELECT * FROM jogos WHERE id_game = '00000451';
+ERRO: Funcao buscar_jogo_id_menu nao implementada
+
+\q

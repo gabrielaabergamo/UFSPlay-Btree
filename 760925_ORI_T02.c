@@ -1155,11 +1155,11 @@ void escrever_registro_compra(Compra c, int rrn) {
 /* Funções principais */
 void cadastrar_usuario_menu(char *id_user, char *username, char *email) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    // bool isFound = btree_search(NULL, false, id_user, usuarios_idx.rrn_raiz, &usuarios_idx);
-    // if(isFound){
-    //     printf(ERRO_PK_REPETIDA, id_user);
-    //     return;
-    // }
+     bool isFound = btree_search(NULL, false, id_user, usuarios_idx.rrn_raiz, &usuarios_idx);
+     if(isFound){
+         printf(ERRO_PK_REPETIDA, id_user);
+         return;
+    }
 
     Usuario u;
     strcpy(u.id_user, id_user);
@@ -1173,25 +1173,89 @@ void cadastrar_usuario_menu(char *id_user, char *username, char *email) {
     qtd_registros_usuarios++;
     escrever_registro_usuario(u, qtd_registros_usuarios-1);
     btree_insert(usuario_str, &usuarios_idx);
-
-    qsort(&usuarios_idx, qtd_registros_usuarios, TAM_CHAVE_USUARIOS_IDX, order_usuarios_idx);
+    
     printf(SUCESSO);
     //printf(ERRO_NAO_IMPLEMENTADO, "cadastrar_usuario_menu");
 }
 
 void cadastrar_celular_menu(char* id_user, char* celular) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "cadastrar_celular_menu");
+    char aux[TAM_CHAVE_USUARIOS_IDX + 1];
+    bool isFound = btree_search(&aux, false, id_user, usuarios_idx.rrn_raiz, &usuarios_idx);
+    int tamRRN = usuarios_idx.tam_chave - 4;
+    int rrn = atoi(aux+tamRRN);
+     if(!isFound){
+         printf(ERRO_REGISTRO_NAO_ENCONTRADO);
+         return;
+    }
+    
+    Usuario u = recuperar_registro_usuario(rrn);
+    strcpy(u.celular, celular);
+
+    escrever_registro_usuario(u, rrn);
+
+    printf(SUCESSO);
+    //printf(ERRO_NAO_IMPLEMENTADO, "cadastrar_celular_menu");
 }
 
 void cadastrar_jogo_menu(char *titulo, char *desenvolvedor, char *editora, char* lancamento, double preco) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "cadastrar_jogo_menu");
+    bool isFound = btree_search(NULL, false, titulo, titulo_idx.rrn_raiz, &titulo_idx);
+     if(isFound){
+         printf(ERRO_PK_REPETIDA, titulo);
+         return;
+    }
+
+    Jogo j;
+    strcpy(j.titulo, titulo);
+    strcpy(j.desenvolvedor,desenvolvedor);
+    strcpy(j.editora, editora);
+    strcpy(j.data_lancamento, lancamento);
+    j.preco = preco;
+    sprintf(j.id_game, "%.8u", qtd_registros_jogos);
+    *j.categorias[0] = '\0';
+    *j.categorias[1] = '\0';
+    *j.categorias[2] = '\0';
+
+    char jogos_str[TAM_CHAVE_JOGOS_IDX + 1];
+    sprintf(jogos_str, "%s%04d", j.id_game, qtd_registros_jogos);
+    qtd_registros_jogos++;
+    escrever_registro_jogo(j, qtd_registros_jogos-1);
+    btree_insert(jogos_str, &jogos_idx);
+
+    char titulos_str[TAM_CHAVE_TITULO_IDX + 1];
+    strcpy(titulos_str, j.titulo);
+    strpadright(titulos_str, '#', TAM_MAX_TITULO - 1);
+    strcat(titulos_str, j.id_game);
+    btree_insert(titulos_str, &titulo_idx);
+    printf(SUCESSO);
+
+    //printf(ERRO_NAO_IMPLEMENTADO, "cadastrar_jogo_menu");
 }
 
 void adicionar_saldo_menu(char *id_user, double valor) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "adicionar_saldo_menu");
+    if(valor <= 0){
+        printf(ERRO_VALOR_INVALIDO);
+        return;
+    }
+    
+    char aux[TAM_CHAVE_USUARIOS_IDX + 1];
+    bool isFound = btree_search(&aux, false, id_user, usuarios_idx.rrn_raiz, &usuarios_idx);
+    int tamRRN = usuarios_idx.tam_chave - 4;
+    int rrn = atoi(aux+tamRRN);
+     if(!isFound){
+         printf(ERRO_REGISTRO_NAO_ENCONTRADO);
+         return;
+    }
+   
+    Usuario u = recuperar_registro_usuario(rrn);
+    u.saldo = u.saldo + valor;
+
+    escrever_registro_usuario(u, rrn);
+
+    printf(SUCESSO);
+    //printf(ERRO_NAO_IMPLEMENTADO, "adicionar_saldo_menu");
 }
 
 void comprar_menu(char *id_user, char *titulo) {
@@ -1208,7 +1272,22 @@ void cadastrar_categoria_menu(char* titulo, char* categoria) {
 /* Busca */
 void buscar_usuario_id_user_menu(char *id_user) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "buscar_jogo_id_menu");
+    char aux[TAM_CHAVE_USUARIOS_IDX + 1];
+
+    printf(RRN_NOS);
+
+    bool isFound = btree_search(&aux, true, id_user, usuarios_idx.rrn_raiz, &usuarios_idx);
+    int tamRRN = usuarios_idx.tam_chave - 4;
+    int rrn = atoi(aux+tamRRN);
+    
+    printf("\n");
+    if(!isFound){
+        printf(ERRO_REGISTRO_NAO_ENCONTRADO);
+        return;
+    }
+
+    exibir_usuario(rrn);
+    //printf(ERRO_NAO_IMPLEMENTADO, "buscar_jogo_id_menu");
 }
 
 void buscar_jogo_id_menu(char *id_game) {
@@ -1225,7 +1304,19 @@ void buscar_jogo_titulo_menu(char *titulo) {
 /* Listagem */
 void listar_usuarios_id_user_menu() {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "listar_usuarios_id_user_menu");
+    // if(qtd_registros_usuarios == 0){
+    //     printf(AVISO_NENHUM_REGISTRO_ENCONTRADO);
+    //     return;
+    // }
+
+    // for(int i = 0; i < qtd_registros_usuarios; i++){
+    //     char aux[TAM_CHAVE_USUARIOS_IDX + 1];
+    //     bool isFound = btree_search(&aux, false, titulo, usuarios_idx.rrn_raiz, &usuarios_idx);
+    //     int tamRRN = usuarios_idx.tam_chave - 4;
+    //     int rrn = atoi(aux+tamRRN);
+    //     exibir_usuario(rrn);
+    // }
+    //printf(ERRO_NAO_IMPLEMENTADO, "listar_usuarios_id_user_menu");
 }
 
 void listar_jogos_categorias_menu(char *categoria) {
@@ -1321,22 +1412,22 @@ int order_usuarios_idx(const void *key, const void *elem) {
 /* Função de comparação entre chaves do índice jogos_idx */
 int order_jogos_idx(const void *key, const void *elem) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "order_jogos_idx");
-    return -1;
+    return strncmp(key, elem, TAM_ID_GAME - 1);
+    //printf(ERRO_NAO_IMPLEMENTADO, "order_jogos_idx");
 }
 
 /* Função de comparação entre chaves do índice compras_idx */
 int order_compras_idx(const void *key, const void *elem) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "order_compras_idx");
-    return -1;
+    return strncmp(key, elem,  strlen(key));
+    //printf(ERRO_NAO_IMPLEMENTADO, "order_compras_idx");
 }
 
 /* Função de comparação entre chaves do índice titulo_idx */
 int order_titulo_idx(const void *key, const void *elem) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    printf(ERRO_NAO_IMPLEMENTADO, "order_titulo_idx");
-    return -1;
+    return strncmp(key, elem, strlen(key));
+    //printf(ERRO_NAO_IMPLEMENTADO, "order_titulo_idx");
 }
 
 /* Função de comparação entre chaves do índice data_user_game_idx */
@@ -1381,7 +1472,6 @@ bool inverted_list_binary_search(int* result, bool exibir_caminho, char *chave, 
 
 /* Funções de manipulação de Árvores-B */
 void btree_insert(char *chave, btree *t) {
-    /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
     if (t->rrn_raiz == -1) {
         btree_node aux = btree_node_malloc(t);
         aux.folha = true;
@@ -1397,7 +1487,7 @@ void btree_insert(char *chave, btree *t) {
         btree_node_free(aux);
     } else {
         promovido_aux promocao = btree_insert_aux(chave, t->rrn_raiz, t);
-
+        
         if(*promocao.chave_promovida != '\0'){
             btree_node aux = btree_node_malloc(t);
             aux.folha = false;
@@ -1409,7 +1499,6 @@ void btree_insert(char *chave, btree *t) {
 
             t->rrn_raiz = aux.this_rrn;
             t->qtd_nos++;
-
             btree_write(aux, t);
             btree_node_free(aux);
         }
@@ -1420,7 +1509,6 @@ void btree_insert(char *chave, btree *t) {
 promovido_aux btree_insert_aux(char *chave, int rrn, btree *t) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
     btree_node aux = btree_read(rrn, t);
-
     if(aux.folha){
         if(aux.qtd_chaves < btree_order - 1){
             int n = aux.qtd_chaves - 1;
@@ -1470,12 +1558,15 @@ promovido_aux btree_insert_aux(char *chave, int rrn, btree *t) {
             btree_write(aux, t);
             btree_node_free(aux);
             return promocao;
+        } else {
+            btree_node_free(aux);
+            return btree_divide(chave, promocao.filho_direito, rrn, t);
         }
-        *promocao.chave_promovida = '\0';
+    }
+    *promocao.chave_promovida = '\0';
         promocao.filho_direito = -1;
         btree_node_free(aux);
         return promocao;
-    }
     //printf(ERRO_NAO_IMPLEMENTADO, "btree_insert_aux");
 }
 
@@ -1551,7 +1642,7 @@ bool btree_search(char *result, bool exibir_caminho, char *chave, int rrn, btree
         btree_node_free(aux);
         return false;
     }
-
+    
     return btree_search(result, exibir_caminho, chave, aux.filhos[n], t);
 
     //printf(ERRO_NAO_IMPLEMENTADO, "btree_search");
@@ -1560,38 +1651,105 @@ bool btree_search(char *result, bool exibir_caminho, char *chave, int rrn, btree
 bool btree_binary_search(int *result, bool exibir_caminho, char* chave, btree_node* node, btree* t) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
 
+    int imax = node->qtd_chaves;
+    int imin = 0;
+    while(imin < imax){
+        int imid = imin + ((imax - imin)/2);
+        if(exibir_caminho){
+            printf(" %d", imid);
+        }
 
-    //printf(ERRO_NAO_IMPLEMENTADO, "btree_binary_search");
+        if(result != NULL){
+            *result = imid;
+        }
+
+        if(t->compar(chave, node->chaves[imid])>0){
+            imin = imid + 1;
+            *result = imin;
+        } else if(t->compar(chave, node->chaves[imid])<0) {
+            imax = imid;
+            *result = imax;
+        } else {
+            return true; 
+        }   
+             
+    }
     return false;
+    //printf(ERRO_NAO_IMPLEMENTADO, "btree_binary_search");
 }
 
 bool btree_print_in_order(char *chave_inicio, char *chave_fim, bool (*exibir)(char *chave), int rrn, btree *t) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
+
     printf(ERRO_NAO_IMPLEMENTADO, "btree_print_in_order");
     return false;
 }
 
 btree_node btree_read(int rrn, btree *t) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
+    btree_node nodeAux = btree_node_malloc(t);
+    char aux[btree_register_size(t) + 1];
+    int tam = 0;
+    strncpy(aux, t->arquivo + (rrn * btree_register_size(t)), btree_register_size(t));
+    aux[btree_register_size(t)] = '\0';
+    // printf("aux logo depois do strncpy: %s\n", aux);
+    nodeAux.this_rrn = rrn;
+
+    char auxQtdChaves[4];
+    strncpy(auxQtdChaves, aux, 3);
+    auxQtdChaves[3] = '\0';
+    nodeAux.qtd_chaves = atoi(auxQtdChaves);
+    tam = 3;
+    //printf("qtd de chaves: %d\n", nodeAux.qtd_chaves);
+    for(int i = 0; i < btree_order-1; i++){
+        if(strncmp(aux+tam+(i*t->tam_chave), "#", 1) == 0){
+            *nodeAux.chaves[i] = '\0';
+        } else {
+            strncpy(nodeAux.chaves[i], aux+tam+(i*t->tam_chave), t->tam_chave);
+        }
+    }
+    tam += (btree_order - 1) * t->tam_chave;
+
+    char auxFolha[2];
+    strncpy(auxFolha, aux+tam, 1);
+    auxFolha[1] = '\0';
+    if(strncmp(auxFolha, "T", 1) == 0){
+        nodeAux.folha = true;
+    } else {
+        nodeAux.folha = false;
+    }
+    tam += 1;
+
+    for(int i = 0; i < btree_order; i++){
+        if(strncmp(aux+tam+(3*i), "*", 1) == 0){
+            nodeAux.filhos[i] = -1;
+        } else {
+            char auxFilhos[4];
+            strncpy(auxFilhos, aux+tam+(3*i), 3);
+            auxFilhos[3] = '\0';
+            nodeAux.filhos[i] = atoi(auxFilhos);
+        }
+    }
+    return nodeAux;
     //printf(ERRO_NAO_IMPLEMENTADO, "btree_read");
 }
 
 void btree_write(btree_node no, btree *t) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-
-    char temp[btree_register_size(t) + 1];
+    int tamanhoRegistro = btree_register_size(t);
+    char temp[tamanhoRegistro + 1];
     temp[0] = '\0';
-    int aux = 0;
 
-    sprintf(temp, "%03d",no.qtd_chaves);
+    sprintf(temp, "%03d", no.qtd_chaves);
 
-    for(int i = 0; i+1 <= no.qtd_chaves; i++){
-        strcat(temp, no.chaves[i]);
-        aux++;
+    for(int i = 0; i < no.qtd_chaves; i++){
+        strncat(temp, no.chaves[i], t->tam_chave);
     }
-    if(no.qtd_chaves - aux != 0){
-        for(int i = no.qtd_chaves - aux - 1; i+1 <= no.qtd_chaves; i++)
-            strcat(temp, strpadright(temp,'#', t->tam_chave));
+    //printf("temp só com a chave: %s\n", temp);
+    if((btree_order - 1) > no.qtd_chaves){
+        for(int i = no.qtd_chaves; i < (btree_order-1); i++){
+            strpadright(temp,'#', strlen(temp)+t->tam_chave);
+        }
     }
 
     if(no.folha == true){
@@ -1600,16 +1758,17 @@ void btree_write(btree_node no, btree *t) {
         strcat(temp, "F");
     }
     
-
-    int auxFilhos = 0; 
-    for(int i = 0; no.filhos[i] != -1; i++){
-        sprintf(temp, "%03d",no.filhos[i]);
-        auxFilhos++;
+    for(int i = 0; i < btree_order; i++){
+        if(no.filhos[i] == -1){
+            strcat(temp, "***");
+        } else {
+            char auxFilhos[4]; 
+            sprintf(auxFilhos, "%03d",no.filhos[i]);
+            strcat(temp, auxFilhos);
+        }
     }
-    for(int i = btree_order - auxFilhos - 1; i + 1 <= btree_order; i++){
-        strcat(temp, "***");
-    }
-    
+    strncpy(t->arquivo + no.this_rrn*tamanhoRegistro, temp, tamanhoRegistro);
+    t->arquivo[t->qtd_nos*tamanhoRegistro] = '\0';
 }
 
 int btree_register_size(btree *t) {
