@@ -1,0 +1,106 @@
+-- OPERAÇÕES CONTEMPLADAS PELO CASO DE TESTE:
+-- ÁRVORE-B DE ORDEM 6
+-- COM ARQUIVO DE USUARIOS
+-- COM ARQUIVO DE JOGOS
+-- CADASTRO DE CELULAR
+-- DEPÓSITO DE SALDO
+-- BUSCA DE USUARIOS POR ID
+-- BUSCA DE JOGOS POR ID
+-- IMPRIMIR ARQUIVO USUARIOS
+-- IMPRIMIR ARQUIVO JOGOS
+-- IMPRIMIR ÍNDICE DE USUARIOS
+-- IMPRIMIR ÍNDICE DE JOGOS
+-- IMPRIMIR ÍNDICE DE TITULO
+
+-- depósito para o usuario C
+UPDATE usuarios SET saldo = saldo + 5 WHERE id_user = '44565434213';
+OK
+
+-- depósito válido para o usuario D
+UPDATE usuarios SET saldo = saldo + 190.33 WHERE id_user = '54654367865';
+OK
+
+-- depósito para um usuario inexistente
+UPDATE usuarios SET saldo = saldo + 1250.80 WHERE id_user = '3987655678';
+ERRO: Registro nao encontrado
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000000.00;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;15991003553;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000010.00;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000000380.66;###########################################################37567876542;Erlkonigin;melissa@gmail.com;***********;0000000000.00;#############################################################14565436782;melange;melissa@gmail.com;***********;0000000000.00;################################################################
+\echo index usuarios_idx
+003145654367820005375678765420004445654342130002##############################T******************002665456787650000998765567820001#############################################T******************001546543678650003############################################################F000001************
+
+-- cadastrando novo celular para o usuario B
+UPDATE usuarios SET celular = '15991833742' WHERE id_user = '99876556782';
+OK
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000000.00;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;15991833742;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000010.00;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000000380.66;###########################################################37567876542;Erlkonigin;melissa@gmail.com;***********;0000000000.00;#############################################################14565436782;melange;melissa@gmail.com;***********;0000000000.00;################################################################
+\echo index usuarios_idx
+003145654367820005375678765420004445654342130002##############################T******************002665456787650000998765567820001#############################################T******************001546543678650003############################################################F000001************
+\echo index titulo_idx
+005Catorze Minutos############################00000002Cavaleiro Vazio############################00000004Esquerda 4 Morto 2#########################00000003Meia-Vida##################################00000000Presa######################################00000001T******************
+
+\echo file ARQUIVO_USUARIOS
+66545678765;SnailThemi;mariaeugenia@gmail.com;***********;0000000000.00;########################################################99876556782;ezPz#Fireclan;ga.augusto@gmail.com;15991833742;0000000000.00;#######################################################44565434213;forninhocaiu;ge.santana@gmail.com;***********;0000000010.00;########################################################54654367865;batata_doce;galmeida@gmail.com;***********;0000000380.66;###########################################################37567876542;Erlkonigin;melissa@gmail.com;***********;0000000000.00;#############################################################14565436782;melange;melissa@gmail.com;***********;0000000000.00;################################################################
+\echo index usuarios_idx
+003145654367820005375678765420004445654342130002##############################T******************002665456787650000998765567820001#############################################T******************001546543678650003############################################################F000001************
+\echo index titulo_idx
+005Catorze Minutos############################00000002Cavaleiro Vazio############################00000004Esquerda 4 Morto 2#########################00000003Meia-Vida##################################00000000Presa######################################00000001T******************
+
+-- buscando usuários existentes pelo ID
+SELECT * FROM usuarios ORDER BY id_user ASC;
+SELECT * FROM usuarios WHERE id_user = '14565436782';
+Nos percorridos: 2 (0) 0 (1 0)
+14565436782, melange, melissa@gmail.com, ***********, 0.00
+SELECT * FROM usuarios WHERE id_user = '37567876542';
+Nos percorridos: 2 (0) 0 (1)
+37567876542, Erlkonigin, melissa@gmail.com, ***********, 0.00
+SELECT * FROM usuarios WHERE id_user = '44565434213';
+Nos percorridos: 2 (0) 0 (1 2)
+44565434213, forninhocaiu, ge.santana@gmail.com, ***********, 10.00
+SELECT * FROM usuarios WHERE id_user = '54654367865';
+Nos percorridos: 2 (0)
+54654367865, batata_doce, galmeida@gmail.com, ***********, 380.66
+SELECT * FROM usuarios WHERE id_user = '66545678765';
+Nos percorridos: 2 (0) 1 (1 0)
+66545678765, SnailThemi, mariaeugenia@gmail.com, ***********, 0.00
+SELECT * FROM usuarios WHERE id_user = '99876556782';
+Nos percorridos: 2 (0) 1 (1)
+99876556782, ezPz#Fireclan, ga.augusto@gmail.com, 15991833742, 0.00
+
+-- buscando usuários inexistentes pelo ID
+SELECT * FROM usuarios WHERE id_user = '12565436782';
+Nos percorridos: 2 (0) 0 (1 0)
+ERRO: Registro nao encontrado
+SELECT * FROM usuarios WHERE id_user = '75565434213';
+Nos percorridos: 2 (0) 1 (1 0)
+ERRO: Registro nao encontrado
+SELECT * FROM usuarios WHERE id_user = '99976556782';
+Nos percorridos: 2 (0) 1 (1)
+ERRO: Registro nao encontrado
+
+\echo file ARQUIVO_JOGOS
+00000000;Meia-Vida;Valvula;Valvula;19981119;0000000029.69;;#####################################################################################################################################################################################################00000001;Presa;Cabeca de Melao Studios;40K Jogos;20070711;0000000044.29;;#######################################################################################################################################################################################00000002;Catorze Minutos;Antonio Luis;Annapurr;20210819;0000000051.99;;#########################################################################################################################################################################################00000003;Esquerda 4 Morto 2;Valvula;Valvula;20091117;0000000020.69;;############################################################################################################################################################################################00000004;Cavaleiro Vazio;Time Cereja;Time Cereja;20170224;0000000027.99;;#######################################################################################################################################################################################
+\echo index jogos_idx
+005000000000000000000010001000000020002000000030003000000040004T******************
+\echo index titulo_idx
+005Catorze Minutos############################00000002Cavaleiro Vazio############################00000004Esquerda 4 Morto 2#########################00000003Meia-Vida##################################00000000Presa######################################00000001T******************
+
+-- buscando jogos existentes pelo ID
+SELECT * FROM jogos WHERE id_game = '00000000';
+Nos percorridos: 0 (2 1 0)
+00000000, Meia-Vida, Valvula, Valvula, 19981119, 29.69
+SELECT * FROM jogos WHERE id_game = '00000002';
+Nos percorridos: 0 (2)
+00000002, Catorze Minutos, Antonio Luis, Annapurr, 20210819, 51.99
+SELECT * FROM jogos WHERE id_game = '00000004';
+Nos percorridos: 0 (2 4)
+00000004, Cavaleiro Vazio, Time Cereja, Time Cereja, 20170224, 27.99
+
+-- buscando jogos inexistentes pelo ID
+SELECT * FROM jogos WHERE id_game = '00000011';
+Nos percorridos: 0 (2 4)
+ERRO: Registro nao encontrado
+SELECT * FROM jogos WHERE id_game = '00000451';
+Nos percorridos: 0 (2 4)
+ERRO: Registro nao encontrado
+
+\q
