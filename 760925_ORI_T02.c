@@ -1152,7 +1152,7 @@ void escrever_registro_compra(Compra c, int rrn) {
     strncpy(ARQUIVO_COMPRAS + rrn*TAM_REGISTRO_COMPRA, temp, TAM_REGISTRO_COMPRA);
     ARQUIVO_COMPRAS[qtd_registros_compras*TAM_REGISTRO_COMPRA] = '\0';
 
-    printf(ERRO_NAO_IMPLEMENTADO, "escrever_registro_compra");
+    //printf(ERRO_NAO_IMPLEMENTADO, "escrever_registro_compra");
 }
 
 
@@ -1264,42 +1264,73 @@ void adicionar_saldo_menu(char *id_user, double valor) {
 
 void comprar_menu(char *id_user, char *titulo) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    // char usuario[TAM_CHAVE_USUARIOS_IDX + 1];
-    // bool isFoundUser = btree_search(usuario, false, id_user, usuarios_idx.rrn_raiz, &usuarios_idx);
-    // int tamRRNUser = usuarios_idx.tam_chave - 4;
-    // int rrnUsuario = atoi(usuario+tamRRNUser);
-    //  if(!isFoundUser){
-    //      printf(ERRO_REGISTRO_NAO_ENCONTRADO);
-    //      return;
-    // }
+    char usuario[TAM_CHAVE_USUARIOS_IDX + 1];
+    bool isFoundUser = btree_search(usuario, false, id_user, usuarios_idx.rrn_raiz, &usuarios_idx);
+    int tamRRNUser = usuarios_idx.tam_chave - 4;
+    int rrnUsuario = atoi(usuario+tamRRNUser);
+     if(!isFoundUser){
+         printf(ERRO_REGISTRO_NAO_ENCONTRADO);
+         return;
+    }
 
-    // char titulo[TAM_CHAVE_TITULO_IDX + 1];
-    // bool isFoundTitle = btree_search(titulo, false, titulo, titulo_idx.rrn_raiz, &titulo_idx);
-    // int tamRRNTitle = titulo_idx.tam_chave - 4;
-    // int rrnTitulo = atoi(titulo+tamRRNTitle);
-    //  if(!isFoundTitle){
-    //      printf(ERRO_REGISTRO_NAO_ENCONTRADO);
-    //      return;
-    // }
+    char titulos[TAM_CHAVE_TITULO_IDX + 1];
+    bool isFoundTitle = btree_search(titulos, false, titulo, titulo_idx.rrn_raiz, &titulo_idx);
+    // int tamRRNTitle = titulo_idx.tam_chave - 8  ;
+    // int rrnTitulo = atoi(titulos+tamRRNTitle);
+     if(!isFoundTitle){
+         printf(ERRO_REGISTRO_NAO_ENCONTRADO);
+         return;
+    }
 
-    // char jogo[TAM_CHAVE_JOGO_IDX + 1];
-    // bool isFoundGame = btree_search(jogo, false, titulo, jogos_idx.rrn_raiz, &jogos_idx);
-    // int tamRRNGame = jogos_idx.tam_chave - 4;
-    // int rrnTitulo = atoi(jogo+tamRRNGame);
-    //  if(!isFoundGame){
-    //      printf(ERRO_REGISTRO_NAO_ENCONTRADO);
-    //      return;
-    // }
+    char jogo[TAM_CHAVE_JOGOS_IDX + 1];
+    // printf("titulo %s\n", titulos);
+    bool isFoundGame = btree_search(jogo, false, titulos+TAM_MAX_TITULO-1, jogos_idx.rrn_raiz, &jogos_idx);
+    // printf("JOGO %s\n", jogo);
+    int tamRRNGame = jogos_idx.tam_chave - 4;
+    int rrnJogo = atoi(jogo+tamRRNGame);
 
-    // char compra[TAM_CHAVE_COMPRA_IDX + 1];
-    // bool isFoundSale = btree_search(compra, false, titulo, compras_idx.rrn_raiz, &compras_idx);
-    // int tamRRNGame = jogos_idx.tam_chave - 4;
-    // int rrnTitulo = atoi(jogo+tamRRNGame);
-    //  if(!isFoundGame){
-    //      printf(ERRO_REGISTRO_NAO_ENCONTRADO);
-    //      return;
-    // }
+    char compra[TAM_CHAVE_COMPRAS_IDX + 1];
+    char auxCompra[TAM_ID_USER + TAM_ID_GAME + 1];
+    strcpy(auxCompra, id_user);
+    Jogo j = recuperar_registro_jogo(rrnJogo);
+    strcat(auxCompra, j.id_game);
+    //auxCompra[TAM_ID_USER + TAM_ID_GAME] = '\0';
+    bool isFoundSale = btree_search(compra, false, auxCompra, compras_idx.rrn_raiz, &compras_idx);
+    int tamRRNPurchase = compras_idx.tam_chave - 4;
+    int rrnCompra = atoi(compra+tamRRNPurchase);
+    //printf("auxCompra %s\n", auxCompra);
+    // printf("compra %s\n", compra);
 
+     if(isFoundSale){
+         printf(ERRO_PK_REPETIDA, auxCompra);
+         return;
+    }
+
+
+    Usuario u = recuperar_registro_usuario(rrnUsuario);
+    if(u.saldo < j.preco){
+        printf(ERRO_SALDO_NAO_SUFICIENTE);
+        return;
+    }
+
+    Compra c;
+    char timestamp[TAM_DATE];
+    current_date(timestamp);
+
+    strcpy(c.id_user_dono, id_user);
+    strcpy(c.id_game, j.id_game);
+    strcpy(c.data_compra, timestamp);
+
+    char compra_str[TAM_CHAVE_COMPRAS_IDX + 1];
+    sprintf(compra_str, "%s%s%04d", id_user, j.id_game,qtd_registros_compras);
+    qtd_registros_compras++;
+    escrever_registro_compra(c, qtd_registros_compras-1);
+    btree_insert(compra_str, &compras_idx);
+
+
+    u.saldo = u.saldo - j.preco;
+    escrever_registro_usuario(u, rrnUsuario);
+    printf(SUCESSO);
     //printf(ERRO_NAO_IMPLEMENTADO, "comprar_menu");
 }
 
@@ -1467,7 +1498,7 @@ int order_jogos_idx(const void *key, const void *elem) {
 /* Função de comparação entre chaves do índice compras_idx */
 int order_compras_idx(const void *key, const void *elem) {
     /* <<< COMPLETE AQUI A IMPLEMENTAÇÃO >>> */
-    return strncmp(key, elem,  strlen(key));
+    return strncmp(key, elem,  TAM_CHAVE_COMPRAS_IDX-TAM_RRN_REGISTRO);
     //printf(ERRO_NAO_IMPLEMENTADO, "order_compras_idx");
 }
 
